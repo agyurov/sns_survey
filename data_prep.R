@@ -12,9 +12,9 @@ names(df0)[grep("How.strongly.do.you.agree.or.disagree.with.the.following.statem
 
 # Insert casually missing questions
 df0left = df0[,1:grep("Since.you.first.started",names(df0))]
-df0left = cbind(df0left,if.you.woke.up.tomorrow.and.fount.out.that = rep(NA,nrow(df0)))
+df0left = cbind(df0left,if.you.woke.up.tomorrow.and.fount.out.that = as.character(rep("NA",nrow(df0))))
 df0right = df0[,(grep("Since.you.first.started",names(df0))+1):ncol(df0)]
-df0right = cbind(df0right,if.you.have.any.comments.or.questions.about = rep(NA,nrow(df0)))
+df0right = cbind(df0right,if.you.have.any.comments.or.questions.about = as.character(rep("NA",nrow(df0))))
 df0 = cbind(df0left,df0right)
 
 
@@ -71,8 +71,12 @@ names(df1) = x
 names(df1)
 
 # Finally rename the added missing questions.....
-names(df1)[grep("q14.1",names(df1))] = "q14.1_if you woke up tomorrow and found out that"
-names(df1)[grep("q31.1",names(df1))] = "q14.1_if you have any comments or questions"
+names(df1)[grep("q14.1",names(df1))] = paste("q14.1_IfYouWokeUpTomorrowAndFoundOutThat")
+names(df1)[grep("q31.1",names(df1))] = paste("q31.1_ifYouHaveAnyCommentsOrQuestions")
+
+# convert the two missing columns temporarily to characters
+df1[,grep("q14.1",names(df1))] = as.character(df1[,grep("q14.1",names(df1))])
+df1[,grep("q31.1",names(df1))] = as.character(df1[,grep("q31.1",names(df1))])
 
 # Check variable class ----------------------------------------------------
 
