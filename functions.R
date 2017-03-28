@@ -107,29 +107,67 @@ rename.level = function(df,include.na = NULL){
 }
 
 # goood stuff
-test = function(...,add = F){
+.dictionary = new.env()
+storage = function(...,add = F){
+  #----------------------------------
+  # # If no arguments are passed
+  # if(length(list(...)) == 0){
+  #   if(length(as.list(.dictionary)) == 0){
+  #     return(cat("Storage is empty.\n"))
+  #   }
+  #   else
+  #   return(print(paste0("In storage: ",paste0(names(as.list(.dictionary)),collapse=", "))))
+  # }
+  #----------------------------------
   # Add to environment
   if(add){
     argz = list(...)
     names(argz) = unlist(as.list(substitute(list(...)))[-1])
-    # Check if duplicate
-    # ---------------------
-    print(names(as.list(.dictionary))%in%  names(argz))
+    # Check for duplicates
+    dup = 0
+    for(i in 1:length(argz)){
+      if(names(argz)[i] %in% names(as.list(.dictionary))){
+        dup = c(dup,i)
+        ans = readline(paste0(names(argz)[i]," is already in the dictionary. Overwrite? y/n: \n"))
+        if(ans == "n") next
+        if(ans == "y"){
+          list2env(argz[i],envir=.dictionary)
+          cat(paste0(paste0(names(argz)[i],collapse=", ")," updated in dictionary.\n" ))
+        } 
+      }
+    }
+    if(length(dup)>1){
+      dup <- dup[-1]
+      list2env(argz[-dup],envir=.dictionary)
+      return(cat(paste0("Object(s) ",paste0(names(argz)[-dup],collapse=", ")," added to dictionary." )))
+    }
+    if(length(dup)==1){
+      list2env(argz,envir=.dictionary)
+      return(cat(paste0("Object(s) ",paste0(names(argz),collapse=", ")," added to dictionary." )))
+    }
     
-    # ---------------------
     
-    
-    list2env(argz,envir=.dictionary)
-    return(cat(paste0("Object(s) ",paste0(names(argz),collapse=", ")," added to dictionary." )))
   }
+  #----------------------------------
   # Return object from environment
   if(!add){
-    print("Enter iff add = F")
     argz = as.list(substitute(list(...)))
     argz = argz[-1]
     names(argz) = unlist(argz)
-    
-    out = as.list(.dictionary)
-    return(out[names(out) %in% names(argz)])
+    # Check for existance
+    exis = 0
+    for(i in 1:length(argz)){
+      if(!names(argz)[i] %in% names(as.list(.dictionary))){
+        exis = c(exis,i)
+        cat(paste0(names(argz)[i]," does not exist in dictionary.\n"))
+      }
+    }
+    if(length(exis)>1){
+      exis = exis[-1]
+      return(as.list(.dictionary)[names(argz)[-exis]])
+    }
+    if(length(exis)==1){
+      return(as.list(.dictionary)[names(argz)])
+    }
   }
 }
