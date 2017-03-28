@@ -21,6 +21,6 @@ list2env(df.list,envir=.GlobalEnv)
 par(mfrow=c(2,2))
 for(i in 1:length(df.list.na)){
   if(ncol(df.list.na[[i]]) == 1) plot(df.list.na[[i]][,1],main=paste0("q",i,"\n",unique(full_questions_names)[i]),ylab="")
-  else my.barplot(df.list.na[[i]],margins = 1,
+  else my.barplot(df.list.na[[i]],margins = 0,
                   main=paste0("q",i,"\n",unique(full_questions_names)[i]))
 }

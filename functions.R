@@ -63,12 +63,12 @@ my.count = function(x){
 }
 
 # proper barplot
-my.barplot = function(df,margins=NULL, ...){
+my.barplot = function(df,margins=NULL, nas, ...){
   df = df[,!sapply(df,is.numeric)]
   if(1 %in% dim(df) | 0 %in% dim(df)){
     return()
   }
-  ifelse(is.null(margins),margins<- -1,margins <-margins)
+  if(is.null(margins)) margins<- -1
   par(mar=.pardefault$mar + margins)
   # layout(matrix(1:2,nrow=2,byrow=F),height=c(8,1))
   x = lapply(df,table)
@@ -81,11 +81,10 @@ my.barplot = function(df,margins=NULL, ...){
   }
   title()
   text(x=ps,y=par("usr")[3]-dist(par("usr")[3:4])/10,labels=names(df),xpd=NA,srt=45,col=2,cex=.75)
-  # The proper method
   legend(par("usr")[2]+dist(par("usr")[1:2])/50,mean(par("usr")[3:4]),
          names(x[[which.max(unlist(lapply(x,length)))]]),
-         levels(df[,1]),bty="n",xpd=NA,
-         fill = rev(grey.colors(max(unlist(lapply(x,length))))),yjust=.5)
+         as.character(levels(df[,1])),bty="n",xpd=NA,
+         fill = grey.colors(max(unlist(lapply(x,length)))),yjust=.5)
 }
 
 # rename levels to max level
@@ -107,3 +106,30 @@ rename.level = function(df,include.na = NULL){
   return(df) 
 }
 
+# goood stuff
+test = function(...,add = F){
+  # Add to environment
+  if(add){
+    argz = list(...)
+    names(argz) = unlist(as.list(substitute(list(...)))[-1])
+    # Check if duplicate
+    # ---------------------
+    print(names(as.list(.dictionary))%in%  names(argz))
+    
+    # ---------------------
+    
+    
+    list2env(argz,envir=.dictionary)
+    return(cat(paste0("Object(s) ",paste0(names(argz),collapse=", ")," added to dictionary." )))
+  }
+  # Return object from environment
+  if(!add){
+    print("Enter iff add = F")
+    argz = as.list(substitute(list(...)))
+    argz = argz[-1]
+    names(argz) = unlist(argz)
+    
+    out = as.list(.dictionary)
+    return(out[names(out) %in% names(argz)])
+  }
+}

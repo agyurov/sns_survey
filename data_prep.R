@@ -93,14 +93,11 @@ df2$q3.1_friendnum = as.numeric(df2$q3.1_friendnum)
 
 # Dictionary ------------------------------------------------------------
 
-dictionary = as.list(unique(full_questions_names))
-names(dictionary) =paste0("q",1:length(unique(full_questions_names)),"_",unique(full_questions_names))
+questions = as.list(unique(full_questions_names))
+names(questions) =paste0("q",1:length(unique(full_questions_names)),"_",unique(full_questions_names))
 
 loc.shortnames = shortnames
-for(i in 1:length(dictionary)){
-  dictionary[[i]] = loc.shortnames[1:qlen[i]]
+for(i in 1:length(questions)){
+  questions[[i]] = loc.shortnames[1:qlen[i]]
   loc.shortnames = loc.shortnames[-c(1:qlen[i])]
 }
-
-
-str(df2,list.len=ncol(df2))
