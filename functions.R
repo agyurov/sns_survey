@@ -107,67 +107,73 @@ rename.level = function(df,include.na = NULL){
 }
 
 # goood stuff
-.dictionary = new.env()
-storage = function(...,add = F){
-  #----------------------------------
-  # # If no arguments are passed
-  # if(length(list(...)) == 0){
-  #   if(length(as.list(.dictionary)) == 0){
-  #     return(cat("Storage is empty.\n"))
-  #   }
-  #   else
-  #   return(print(paste0("In storage: ",paste0(names(as.list(.dictionary)),collapse=", "))))
-  # }
-  #----------------------------------
-  # Add to environment
-  if(add){
-    argz = list(...)
-    names(argz) = unlist(as.list(substitute(list(...)))[-1])
-    # Check for duplicates
-    dup = 0
-    for(i in 1:length(argz)){
-      if(names(argz)[i] %in% names(as.list(.dictionary))){
-        dup = c(dup,i)
-        ans = readline(paste0(names(argz)[i]," is already in the dictionary. Overwrite? y/n: \n"))
-        if(ans == "n") next
-        if(ans == "y"){
-          list2env(argz[i],envir=.dictionary)
-          cat(paste0(paste0(names(argz)[i],collapse=", ")," updated in dictionary.\n" ))
-        } 
-      }
-    }
-    if(length(dup)>1){
-      dup <- dup[-1]
-      list2env(argz[-dup],envir=.dictionary)
-      return(cat(paste0("Object(s) ",paste0(names(argz)[-dup],collapse=", ")," added to dictionary." )))
-    }
-    if(length(dup)==1){
-      list2env(argz,envir=.dictionary)
-      return(cat(paste0("Object(s) ",paste0(names(argz),collapse=", ")," added to dictionary." )))
-    }
-    
-    
+.BucketEnv = new.env()
+bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
+  # Exit if add=F and empty bucket
+  if(!add & length(as.list(env))==0 & !rmv){
+    cat("Empty bucket, nothing to find here.\n")
+    return(invisible(NULL))
   }
-  #----------------------------------
-  # Return object from environment
-  if(!add){
-    argz = as.list(substitute(list(...)))
-    argz = argz[-1]
-    names(argz) = unlist(argz)
-    # Check for existance
-    exis = 0
-    for(i in 1:length(argz)){
-      if(!names(argz)[i] %in% names(as.list(.dictionary))){
-        exis = c(exis,i)
-        cat(paste0(names(argz)[i]," does not exist in dictionary.\n"))
+  # display items if add=F and !empty bucket
+  if(!add & length(as.list(env))!=0 & length(as.character(as.list(substitute(list(...)))[-1]))==0 & !rmv){
+    cat("In storage: \n")
+    if(short){
+      print(lapply(as.list(env),class))
+    }
+    if(!short){
+      print(as.list(env))
+    }
+    return(invisible(NULL))
+  }
+  arg = as.character(as.list(substitute(list(...)))[-1])
+  
+  # Check for existence
+  out = arg %in% ls(env)
+  # -----------------------------------------
+  # Return from bucket
+  if(!add & !rmv){
+    cat(paste0(paste0(arg[!out],collapse=", ")," not in the bucket. \n"))
+    cat(paste0("Returning ",paste0(arg[out],collapse = ", "),".\n"))
+    return(as.list(env)[arg[out]])
+  }
+  # -----------------------------------------
+  # Add to bucket
+  if(add & !rmv){
+    # Overwriting
+    if(any(out)){
+      for(i in arg[out]){
+        ans = readline(paste0(i," already exist in bucket. Overwrrite? y/n: \n"))
+        if(ans == "y"){
+          assign(i,eval(parse(text = i)),envir = env)
+          cat(paste0(i," added to the bucket!\n"))
+        }
+        if(ans == "n"){}
+        if(!ans %in% c("y","n")){
+          warning("Exitted function - answer me! ")
+        }
       }
     }
-    if(length(exis)>1){
-      exis = exis[-1]
-      return(as.list(.dictionary)[names(argz)[-exis]])
+    # Not overwriting, just adding
+    for(i in arg[!out]){
+      if(exists(i,envir = .GlobalEnv)){
+        assign(i,eval(parse(text = i)),envir = env)
+        cat(paste0(i," added to the bucket!\n"))
+      }
+      if(!exists(i,envir = .GlobalEnv)){
+        cat(paste0("Object ",i," does not exist!\n"))
+      }
     }
-    if(length(exis)==1){
-      return(as.list(.dictionary)[names(argz)])
+  }
+  # Remove items from bucket
+  if(rmv){
+    for(i in arg){
+      ans = readline(paste0("Are you sure you want to remove ",i," from the bucket. y/n: "))
+      if(ans == "y"){
+        rm(list=i,envir = env)
+      }
     }
   }
 }
+
+
+
