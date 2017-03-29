@@ -132,9 +132,15 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
   # -----------------------------------------
   # Return from bucket
   if(!add & !rmv){
-    cat(paste0(paste0(arg[!out],collapse=", ")," not in the bucket. \n"))
-    cat(paste0("Returning ",paste0(arg[out],collapse = ", "),".\n"))
-    return(as.list(env)[arg[out]])
+    if(!all(out)){
+      cat(paste0(paste0(arg[!out],collapse=", ")," not in the bucket. \n"))
+      return(invisible(NULL))
+    }
+    if(all(out)){
+      cat(paste0("Returning ",paste0(arg[out],collapse = ", "),".\n"))
+      return(as.list(env)[arg[out]])
+    }
+    
   }
   # -----------------------------------------
   # Add to bucket
@@ -167,13 +173,20 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
   # Remove items from bucket
   if(rmv){
     for(i in arg){
-      ans = readline(paste0("Are you sure you want to remove ",i," from the bucket. y/n: "))
-      if(ans == "y"){
-        rm(list=i,envir = env)
+      if(!all(out)){
+        cat(paste0(paste0(arg[!out],collapse=", ")," not in the bucket. \n"))
+      }
+      if(all(out)){
+        ans = readline(paste0("Are you sure you want to remove ",i," from the bucket. y/n: "))
+        if(ans == "y"){
+          rm(list=i,envir = env)
+        }
       }
     }
   }
 }
 
-
-
+# save variables to data_file.RData
+record = function(file = data_file){
+  save.image(paste0(getwd(),"/",file))
+}

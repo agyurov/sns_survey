@@ -101,3 +101,9 @@ for(i in 1:length(questions)){
   questions[[i]] = loc.shortnames[1:qlen[i]]
   loc.shortnames = loc.shortnames[-c(1:qlen[i])]
 }
+
+
+# Add to the bucket -------------------------------------------------------
+
+
+bucket(full_questions_names, question_numbers,add=T)
