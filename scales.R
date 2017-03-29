@@ -41,7 +41,74 @@ scales = scaling(scales,ask_opinion)
 scales = scaling(scales,organizing)
 
 # promotion
-scales = scaling()
+scales = scaling(scales,promotion)
+
+# fun
+scales = scaling(scales,fun)
+
+# entertaintment == passive, part of social1
+scales = scaling(scales,passive)
+
+# social2, same level as above
+scales = scaling(scales,social2)
+
+# q11
+tmp = grepl("q11.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["q11"]] = shortnames[tmp]
+
+# reconnecting
+tmp = grepl("q12.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["recon"]] = shortnames[tmp]
+
+# q13
+tmp = grepl("q13.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["q13"]] = shortnames[tmp]
+
+# distance
+tmp = grepl("q15.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["distance"]] = shortnames[tmp]
+
+# distance local
+tmp = grepl("local",scales$distance)
+tmp[!tmp] = NA
+scales[["dist_local"]] = shortnames[tmp]
+
+# distance dist
+tmp = grepl("dist",scales$distance)
+tmp[!tmp] = NA
+scales[["dist_dist"]] = shortnames[tmp]
+
+# q16
+tmp = grepl("q16.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["q16"]] = shortnames[tmp]
+
+# q17
+tmp = grepl("q17.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["q17"]] = shortnames[tmp]
+
+# q18
+tmp = grepl("q18.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["q18"]] = shortnames[tmp]
+
+# 19
+tmp = grepl("q19.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["q19"]] = shortnames[tmp]
+
+# q20
+tmp = grepl("q20.",question_numbers,fixed=T)
+tmp[!tmp] = NA
+scales[["q20"]] = shortnames[tmp]
+
+# demographics
+scales = scaling(scales,demogr)
 
 record()
 
