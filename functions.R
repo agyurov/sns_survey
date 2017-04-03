@@ -187,6 +187,6 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
 }
 
 # save variables to data_file.RData
-record = function(file = data_file){
-  save.image(paste0(getwd(),"/",file))
+record = function(file){
+  save.image(paste0(getwd(),"/",deparse(substitute(file)),".RData"))
 }

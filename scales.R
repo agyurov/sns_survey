@@ -49,6 +49,12 @@ scales = scaling(scales,fun)
 # entertaintment == passive, part of social1
 scales = scaling(scales,passive)
 
+# meeeting
+scales = scaling(scales,meeting)
+
+# communicating
+scales = scaling(scales,commu)
+
 # social2, same level as above
 scales = scaling(scales,social2)
 
@@ -109,6 +115,15 @@ scales[["q20"]] = shortnames[tmp]
 
 # demographics
 scales = scaling(scales,demogr)
+scales.
+
+# scales as data frame
+scales.df = data.frame("question" = names(df2))
+scales.df = cbind(scales.df,do.call(cbind.data.frame,lapply(scales,function(x) !is.na(x))))
+scales.df$groups = NA
+scales.df$specials = NA
+
+#
 
 record()
-
+# unique(c(which(a),which(b)))
