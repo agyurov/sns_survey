@@ -6,6 +6,11 @@ unique.data = function(df){
   return(lapply(df,unique))
 }
 
+# plot.matrix
+plot.matrix = function(x,...){
+  image(t(apply(x,2,rev)),...)
+}
+
 # proper positions for text on plots
 my.par = function(side,scale){
   environment(globalenv())

@@ -107,3 +107,23 @@ for(i in 1:length(questions)){
 
 
 bucket(full_questions_names, question_numbers,add=T)
+
+
+
+# Examination of NAs ------------------------------------------------------
+
+na.rows = apply(df2,1,function(x)sum(is.na(x)))
+table(na.rows)
+table(df2$q2.1_snsusefreq)
+df3 = df2[df2$q2.1_snsusefreq != "1",]
+
+#
+dfna = df2
+dfna$nas = apply(df2,1,function(x)sum(is.na(x)))
+dfna$nas
+focor = do.call(cbind.data.frame,lapply(dfna,function(x)as.numeric(as.character(x))))
+cor.mat = cor(focor,use ="pairwise.complete.obs" )
+c
+
+
+
