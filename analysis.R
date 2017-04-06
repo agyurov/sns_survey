@@ -24,6 +24,16 @@ summary(q8pca)
 q8fa1 = factanal(q8nonanum,factors=3)
 q8fa2 = factanal(q8nonanum,factors=4)
 lapply(list(q8fa1,q8fa2),loadings)
+
+x1 = unclass(q8fa1$loadings)
+x2 = unclass(q8fa2$loadings)
+
+par(mfrow=c(3,1))
+apply(x1,2,barplot)
+
+par(mfrow=c(4,1))
+apply(x2,2,barplot)
+
 # Hypothesis A: got got friends and family -> play games alone
 q8q19 = cbind(q8,q19)
 q8q19nona = na.omit(q8q19)

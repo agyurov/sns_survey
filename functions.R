@@ -200,4 +200,3 @@ record = function(file){
 fact2num = function(y){
   return(do.call(cbind.data.frame,lapply(y[,unlist(lapply(y,is.factor))],function(x) as.numeric(as.character(x)))))
 }
-
