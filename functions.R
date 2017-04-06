@@ -1,6 +1,6 @@
 # functions
 
-
+# dev.set(dev.list()[???]])
 #
 unique.data = function(df){
   return(lapply(df,unique))
@@ -195,3 +195,9 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
 record = function(file){
   save.image(paste0(getwd(),"/",deparse(substitute(file)),".RData"))
 }
+
+# data frame factor to numeric
+fact2num = function(y){
+  return(do.call(cbind.data.frame,lapply(y[,unlist(lapply(y,is.factor))],function(x) as.numeric(as.character(x)))))
+}
+

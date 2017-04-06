@@ -12,9 +12,9 @@ names(df0)[grep("How.strongly.do.you.agree.or.disagree.with.the.following.statem
 
 # Insert casually missing questions
 df0left = df0[,1:grep("Since.you.first.started",names(df0))]
-df0left = cbind(df0left,if.you.woke.up.tomorrow.and.fount.out.that = as.character(rep("NA",nrow(df0))))
+df0left = cbind(df0left,if.you.woke.up.tomorrow.and.fount.out.that = as.character(rep(NA,nrow(df0))))
 df0right = df0[,(grep("Since.you.first.started",names(df0))+1):ncol(df0)]
-df0right = cbind(df0right,if.you.have.any.comments.or.questions.about = as.character(rep("NA",nrow(df0))))
+df0right = cbind(df0right,if.you.have.any.comments.or.questions.about = as.character(rep(NA,nrow(df0))))
 df0 = cbind(df0left,df0right)
 
 
@@ -112,18 +112,52 @@ bucket(full_questions_names, question_numbers,add=T)
 
 # Examination of NAs ------------------------------------------------------
 
+# NA pattern not dependent on snsusefreq
 na.rows = apply(df2,1,function(x)sum(is.na(x)))
 table(na.rows)
 table(df2$q2.1_snsusefreq)
 df3 = df2[df2$q2.1_snsusefreq != "1",]
 
-#
+# NA pattern not correlating with other variables
 dfna = df2
 dfna$nas = apply(df2,1,function(x)sum(is.na(x)))
 dfna$nas
+plot(dfna$nas)
 focor = do.call(cbind.data.frame,lapply(dfna,function(x)as.numeric(as.character(x))))
 cor.mat = cor(focor,use ="pairwise.complete.obs" )
-c
+plot.matrix(cor.mat,col=grey.colors(100,0,1))
 
+# NA pattern in columns
+na.cols = apply(df2,2,function(x)sum(is.na(x)))
+plot.na(df2)
+
+
+
+# add question data frames to environment ---------------------------------
+
+df.list = list()
+j = 0
+for(i in 1:length(qlen)){
+  j = j + 1
+  df.list[[j]] = as.data.frame(df2[,grepl(paste0("q",i,"."), names(df2),fixed=T)])
+  names(df.list[[j]]) = names(df2)[grepl(paste0("q",i,"."), names(df2),fixed=T)]
+}
+names(df.list) = paste0("q",1:length(qlen))
+df.list = lapply(df.list,as.data.frame)
+
+
+# Relevel all questions
+df.list = lapply(df.list,rename.level)
+df.list.na = lapply(df.list,rename.level,include.na=T)
+list2env(df.list,envir=.GlobalEnv)
+
+
+# data frames w/ithout NAs
+df.list2 = df.list
+names(df.list2) = paste0(names(df.list),"nona")
+# how many complete rows for each question set
+df.list2 = lapply(df.list2,na.omit)
+unlist(lapply(df.list2,function(x)dim(x)[1]))
+list2env(df.list2,envir=.GlobalEnv)
 
 
