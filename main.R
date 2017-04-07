@@ -9,7 +9,9 @@ source("libraries.R")
 
 source("functions.R")
 
-source("analysis.R")
+source("data_prep.R")
+
+source("analysis_q8.R")
 
 
 # save.image(paste0(getwd()."/","all_data.RData"))

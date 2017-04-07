@@ -200,3 +200,18 @@ record = function(file){
 fact2num = function(y){
   return(do.call(cbind.data.frame,lapply(y[,unlist(lapply(y,is.factor))],function(x) as.numeric(as.character(x)))))
 }
+
+# Brute force FA with with pca and pval evaluation
+brute.force.fa = function(x){
+  nfac = sum(prcomp(x)$sdev > 1)
+  nfac = min(floor(ncol(x)/2) - 1,nfac)
+  fa.list = list()
+  for(i in 1:nfac){
+    fa.list[[i]]  = factanal(x,factors = i)
+    names(fa.list)[i] = paste0(i,"factors")
+    if(is.null(fa.list[[i]]$PVAL) || fa.list[[i]]$PVAL < .05){
+      fa.list[[i]] = NULL
+    }
+  }
+  return(fa.list[!sapply(fa.list,is.null)])
+}
