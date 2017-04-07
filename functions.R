@@ -8,6 +8,19 @@ unique.data = function(df){
 
 # plot.matrix
 plot.matrix = function(x,...){
+  if(class(x) == "factanal"){
+    x = unlist(x$loadings)
+    image(t(apply(x,2,rev)),axes=F,...)
+    lnx = par("usr")[2]-par("usr")[1]
+    lny = par("usr")[4]-par("usr")[3]
+    # abline(v = seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),col=2)
+    
+    axis(1,at = lnx/ncol(x)*(0:(ncol(x)-1)),labels=paste("factor",1:ncol(x)),xpd=NA) # 1/2*ln/ncol(x)+
+    axis(2,at = lny/nrow(x)*(0:(nrow(x)-1)),labels=rownames(x),las=1,xpd=NA)
+    segments(seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),rep(par("usr")[3],ncol(x)),
+             seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),rep(par("usr")[4],ncol(x)),col=2)
+    return(invisible(NULL))
+  }
   image(t(apply(x,2,rev)),...)
 }
 
@@ -215,3 +228,16 @@ brute.force.fa = function(x){
   }
   return(fa.list[!sapply(fa.list,is.null)])
 }
+
+# plot factor loadings
+plot.loadings = function(x,...){
+  y = unclass(x$loadings)
+  apply(y,2, my.barplot, ...)
+}
+
+# barplot with tilted labels
+my.barplot = function(x,...){
+  b = barplot(x, names.arg=NA,...)
+  text(y=par("usr")[3],x = b, labels=names(x),srt=45,xpd=NA)
+}
+

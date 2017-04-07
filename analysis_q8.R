@@ -16,10 +16,37 @@ fa.list = lapply(df.list2num,brute.force.fa)
 # Q8 ----------------------------------------------------------------------
 # Q8. FA
 fa.list$q8nonanum
+layout(matrix(1:9,nrow=3,byrow=T))
+lapply(fa.list$q8nonanum,plot.matrix,col=grey.colors(3))
+plot.matrix(factanal(q8nonanum,2),col=grey.colors(3))
+plot.matrix(factanal(q8nonanum,4),col=grey.colors(3))
+# plot.loadings(factanal(q8nonanum,2),col=3)
+# plot.loadings(factanal(q8nonanum,4),col=4)
 
+
+
+# Q7-Q8 relation ----------------------------------------------------------
+
+q7q8nonanum = na.omit(fact2num(cbind(q7,q8)))
+
+
+
+
+
+
+# Q7 ----------------------------------------------------------------------
+
+fa.list$q7nonanum
+lapply(fa.list$q7nonanum,plot.matrix,col=grey.colors(5))
 
 # Hypothesis A: got got friends and family -> play games alone
 q8q19 = cbind(q8, q19)
 q8q19nona = na.omit(q8q19)
 q8q19nonanum = fact2num(q8q19nona)
 q8q19fa = brute.force.fa(q8q19nonanum)
+
+
+
+# dev.set(max(dev.list()))
+
+

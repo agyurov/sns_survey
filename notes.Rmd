@@ -1,0 +1,44 @@
+---
+title: "notes"
+output: html_document
+---
+
+```{r setup, include=FALSE,echo = F, message=F, warning=F}
+knitr::opts_chunk$set(echo = F, message=F, warning=F)
+load(paste0(getwd(),"/all_data.Rdata"))
+require(knitr)
+require(markdown)
+```
+
+
+## Data Summary
+
+```{r, echo =F}
+plot.na(df2)
+```
+
+NA pattern unclear.
+
+# Part I. Examination of Q8 "relaxing and playing games how often do you use social network sites to"
+## Part Ia. PCA and FA
+
+Principal component analysis of q8 is adequate due to the 7 step scale of the answers. Normality assumption ont meat, but also not required. PCA applied to cleaned q8 with missing values removed.
+```{r,results='hide',fig.align='center'}
+screeplot(prcomp(q8nonanum),main="Principal components for Q8")
+```
+
+An automated procedure performs factor analysis on q8 by examining different number of factors based, partly on the PCA, and excludes those who do not pass significance. 2 factors not accepted. The higher the correlation the brighter the color.
+
+```{r, fig.align='center',fig.widt=4,fig.height=4}
+par(oma=.pardefault$oma + c(0,8,0,0))
+plot.matrix(factanal(q8nonanum,3),col=grey.colors(10))
+plot.matrix(factanal(q8nonanum,4),col=grey.colors(10))
+```
+
+The 3 factor analysis groups as follows:
+
+* Download music + play games with friends + being entertained
+* browsing for no reason + overcoming loneliness (+ releasing tension)
+* playing games alone
+
+The 4 factor analysis is essentially the same as the 3 factor wit the addition of a 4th factor mostly representing "releasing tension".
