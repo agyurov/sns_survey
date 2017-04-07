@@ -18,7 +18,7 @@ fa.list = lapply(df.list2num,brute.force.fa)
 fa.list$q8nonanum
 layout(matrix(1:9,nrow=3,byrow=T))
 lapply(fa.list$q8nonanum,plot.matrix,col=grey.colors(3))
-plot.matrix(factanal(q8nonanum,2),col=grey.colors(3))
+# plot.matrix(factanal(q8nonanum,2),col=grey.colors(3))
 plot.matrix(factanal(q8nonanum,4),col=grey.colors(3))
 # plot.loadings(factanal(q8nonanum,2),col=3)
 # plot.loadings(factanal(q8nonanum,4),col=4)
@@ -26,10 +26,28 @@ plot.matrix(factanal(q8nonanum,4),col=grey.colors(3))
 
 
 # Q7-Q8 relation ----------------------------------------------------------
+q7q8nona = na.omit(cbind(q7,q8))
+q7q8nonanum = na.omit(fact2num(q7q8nona))
+plot.matrix(cor(q7q8nonanum),axes=F)
+q7q8fa = brute.force.fa(q7q8nonanum)
+lapply(q7q8fa,plot.matrix,col=grey.colors(5))
 
-q7q8nonanum = na.omit(fact2num(cbind(q7,q8)))
+# Predict Q7 with Q8
 
-
+clm.list = function(df,resp, pred, ...){
+  # y predictors
+  # resp, a character vector with every response
+  # pred, a character vector with every predictor
+  frmla = list()
+  clms = list()
+  for(i in 1:length(resp)){
+    frmla[[i]] = as.formula(paste0(resp[i]," ~ ",paste0(pred,collapse=" + ")))
+    clms[[i]] = step(clm(formula=frmla[[i]],data=df),test="Chisq",trace = 0)
+    cat(paste0("Estimating model ",i," of ", length(resp),"\n"))
+  }
+  names(clms) = resp 
+  return(clms)
+}
 
 
 

@@ -7,10 +7,10 @@ unique.data = function(df){
 }
 
 # plot.matrix
-plot.matrix = function(x,...){
+plot.matrix = function(x,col=grey.colors(5), ...){
   if(class(x) == "factanal"){
     x = unlist(x$loadings)
-    image(t(apply(x,2,rev)),axes=F,...)
+    image(t(apply(x,2,rev)),axes=F,col=col, ...)
     lnx = par("usr")[2]-par("usr")[1]
     lny = par("usr")[4]-par("usr")[3]
     # abline(v = seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),col=2)
@@ -21,7 +21,7 @@ plot.matrix = function(x,...){
              seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),rep(par("usr")[4],ncol(x)),col=2)
     return(invisible(NULL))
   }
-  image(t(apply(x,2,rev)),...)
+  image(t(apply(x,2,rev)),col=col, ...)
 }
 
 # proper positions for text on plots
@@ -239,5 +239,12 @@ plot.loadings = function(x,...){
 my.barplot = function(x,...){
   b = barplot(x, names.arg=NA,...)
   text(y=par("usr")[3],x = b, labels=names(x),srt=45,xpd=NA)
+}
+
+# predicted classifications from CLM
+class.pred = function(model){
+  tbl = table(model$y,predict(model,type="class")$fit)
+  perc = round(diag(tbl)/rowSums(tbl),2)
+  return(list(table = tbl, percentages = perc))
 }
 
