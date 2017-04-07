@@ -16,7 +16,7 @@ fa.list = lapply(df.list2num,brute.force.fa)
 # Q8 ----------------------------------------------------------------------
 # Q8. FA
 fa.list$q8nonanum
-layout(matrix(1:9,nrow=3,byrow=T))
+par(mfrow=c(2,1))
 lapply(fa.list$q8nonanum,plot.matrix,col=grey.colors(3))
 # plot.matrix(factanal(q8nonanum,2),col=grey.colors(3))
 plot.matrix(factanal(q8nonanum,4),col=grey.colors(3))
@@ -31,40 +31,14 @@ q7q8nonanum = na.omit(fact2num(q7q8nona))
 plot.matrix(cor(q7q8nonanum),axes=F)
 q7q8fa = brute.force.fa(q7q8nonanum)
 lapply(q7q8fa,plot.matrix,col=grey.colors(5))
-
-# Predict Q7 with Q8
-
-clm.list = function(df,resp, pred, ...){
-  # y predictors
-  # resp, a character vector with every response
-  # pred, a character vector with every predictor
-  frmla = list()
-  clms = list()
-  for(i in 1:length(resp)){
-    frmla[[i]] = as.formula(paste0(resp[i]," ~ ",paste0(pred,collapse=" + ")))
-    clms[[i]] = step(clm(formula=frmla[[i]],data=df),test="Chisq",trace = 0)
-    cat(paste0("Estimating model ",i," of ", length(resp),"\n"))
-  }
-  names(clms) = resp 
-  return(clms)
-}
+q8predq7 = clm.list(q7q8nona,resp=names(q7),pred=names(q8))
+q8predq7accuracy = lapply(q8predq7,function(x) class.pred(x)$percentages)
+# Predict Q7 with Q8_PCA!
 
 
 
 
-# Q7 ----------------------------------------------------------------------
-
-fa.list$q7nonanum
-lapply(fa.list$q7nonanum,plot.matrix,col=grey.colors(5))
-
-# Hypothesis A: got got friends and family -> play games alone
-q8q19 = cbind(q8, q19)
-q8q19nona = na.omit(q8q19)
-q8q19nonanum = fact2num(q8q19nona)
-q8q19fa = brute.force.fa(q8q19nonanum)
+# TO BE CONTINUED ---------------------------------------------------------
 
 
-
-# dev.set(max(dev.list()))
-
-
+q8pcs = brute.force.pca(q8nonanum)

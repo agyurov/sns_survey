@@ -209,9 +209,15 @@ record = function(file){
   save.image(paste0(getwd(),"/",deparse(substitute(file)),".RData"))
 }
 
-# data frame factor to numeric
+# data frame factor to numerics
 fact2num = function(y){
   return(do.call(cbind.data.frame,lapply(y[,unlist(lapply(y,is.factor))],function(x) as.numeric(as.character(x)))))
+}
+
+# Brute force PCA, returning the PCs
+brute.force.pca = function(x){
+  y = prcomp(x)
+  return(y$x[, summary(y)$importance[1,] > 1])
 }
 
 # Brute force FA with with pca and pval evaluation
@@ -243,8 +249,23 @@ my.barplot = function(x,...){
 
 # predicted classifications from CLM
 class.pred = function(model){
-  tbl = table(model$y,predict(model,type="class")$fit)
+  tbl = table(model$y,predict(model,type="class")$fit,useNA = "no")
   perc = round(diag(tbl)/rowSums(tbl),2)
   return(list(table = tbl, percentages = perc))
 }
 
+# Predicting a questions. df of the form cbind(Q1,Q2)
+clm.list = function(df,resp, pred, ...){
+  # y predictors
+  # resp, a character vector with every response
+  # pred, a character vector with every predictor
+  frmla = list()
+  clms = list()
+  for(i in 1:length(resp)){
+    frmla[[i]] = as.formula(paste0(resp[i]," ~ ",paste0(pred,collapse=" + ")))
+    clms[[i]] = step(clm(formula=frmla[[i]],data=df),test="Chisq",trace = 0)
+    cat(paste0("Estimating model ",i," of ", length(resp),"\n"))
+  }
+  names(clms) = resp 
+  return(clms)
+}
