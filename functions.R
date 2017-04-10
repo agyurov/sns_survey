@@ -81,7 +81,7 @@ my.count = function(x){
 }
 
 # proper barplot
-my.barplot = function(df,margins=NULL, nas, ...){
+my.barplot.old = function(df,margins=NULL, nas, ...){
   df = df[,!sapply(df,is.numeric)]
   if(1 %in% dim(df) | 0 %in% dim(df)){
     return()
@@ -221,12 +221,12 @@ brute.force.pca = function(x){
 }
 
 # Brute force FA with with pca and pval evaluation
-brute.force.fa = function(x){
+brute.force.fa = function(x,...){
   nfac = sum(prcomp(x)$sdev > 1)
   nfac = min(floor(ncol(x)/2) - 1,nfac)
   fa.list = list()
   for(i in 1:nfac){
-    fa.list[[i]]  = factanal(x,factors = i)
+    fa.list[[i]]  = factanal(x,factors = i,...)
     names(fa.list)[i] = paste0(i,"factors")
     if(is.null(fa.list[[i]]$PVAL) || fa.list[[i]]$PVAL < .05){
       fa.list[[i]] = NULL
@@ -238,13 +238,14 @@ brute.force.fa = function(x){
 # plot factor loadings
 plot.loadings = function(x,...){
   y = unclass(x$loadings)
-  apply(y,2, my.barplot, ...)
+  apply(y,2, my.barplot, namez = rownames(y), ...)
+  return(invisible(NULL))
 }
 
 # barplot with tilted labels
-my.barplot = function(x,...){
+my.barplot = function(x, namez, ...){
   b = barplot(x, names.arg=NA,...)
-  text(y=par("usr")[3],x = b, labels=names(x),srt=45,xpd=NA)
+  text(y=par("usr")[3],x = b, labels=namez,srt=45,xpd=NA,...)
 }
 
 # predicted classifications from CLM
@@ -255,17 +256,48 @@ class.pred = function(model){
 }
 
 # Predicting a questions. df of the form cbind(Q1,Q2)
-clm.list = function(df,resp, pred, ...){
-  # y predictors
-  # resp, a character vector with every response
-  # pred, a character vector with every predictor
-  frmla = list()
+model.list = function(x,y, ...){
+  # x predictors
+  # y responses
   clms = list()
-  for(i in 1:length(resp)){
-    frmla[[i]] = as.formula(paste0(resp[i]," ~ ",paste0(pred,collapse=" + ")))
-    clms[[i]] = step(clm(formula=frmla[[i]],data=df),test="Chisq",trace = 0)
-    cat(paste0("Estimating model ",i," of ", length(resp),"\n"))
+  x = as.data.frame(x)
+  y = as.data.frame(y)
+  
+  for(i in 1:ncol(y)){
+    df = cbind(x,Y=y[,i])
+    frmla = as.formula(paste0("Y"," ~ ",paste0(names(x),collapse=" + ")))
+    # perform LM if numeric
+    if(is.numeric(df$Y)){
+      clms[[i]] = step(lm(formula=frmla,data=df,...),test="F",trace = 0)
+    }
+    # perform CLM if ordinal
+    if(!is.numeric(df$Y)){
+      clms[[i]] = step(clm(formula=frmla,data=df,...),test="Chisq",trace = 0)
+    }
+    cat(paste0("Estimating model ",i," of ", ncol(y),"\n"))
   }
-  names(clms) = resp 
+  names(clms) = names(y) 
   return(clms)
+}
+
+# Predicting each var in a df
+clm.each = function(x){
+  clms = list()
+  for(i in 1:ncol(x)){
+    frmla = as.formula(paste0(names(x)[i],"~."))
+    clms[[i]] = step(clm(frmla , data =x),trace=0)
+    cat(paste0("Estimating model ",i," of ", ncol(x),"\n"))
+  }
+  names(clms) = names(x)
+  return(clms)
+}
+
+# Evaluate model
+eval.model = function(x,...){
+  if(class(x) == "lm"){
+    plot(x,...)
+    acf(resid(x),...)
+    cat(paste0(lillie.test(resid(x))$p.value,"\n"))
+    return(invisible(NULL))
+  }
 }

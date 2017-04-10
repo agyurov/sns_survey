@@ -13,7 +13,7 @@ require(markdown)
 
 ## Data Summary
 
-```{r, echo =F}
+```{r, echo =F,fig.align='center'}
 plot.na(df2)
 ```
 
@@ -24,7 +24,7 @@ NA pattern unclear.
 
 Principal component analysis of q8 is adequate due to the 7 step scale of the answers. Normality assumption ont meat, but also not required. PCA applied to cleaned q8 with missing values removed.
 ```{r,results='hide',fig.align='center'}
-screeplot(prcomp(q8nonanum),main="Principal components for Q8")
+my.barplot(prcomp(q8nonanum)$sdev^2,main="Principal components for Q8",namez=names(q8nonanum))
 ```
 
 An automated procedure performs factor analysis on q8 by examining different number of factors based, partly on the PCA, and excludes those who do not pass significance. 2 factor decomposition does not pass and hence the hypothesis that Question8 can be viewed as a "socializing" vs "alone" question is rejected. The higher the correlation the brighter the color.
@@ -41,7 +41,7 @@ The 3 factor analysis groups as follows:
 * browsing for no reason + overcoming loneliness (+ releasing tension)
 * playing games alone
 
-The 4 factor analysis is essentially the same as the 3 factor wit the addition of a 4th factor mostly representing "releasing tension".
+The 4 factor analysis is essentially the same as the 3 factor with the addition of a 4th factor mostly representing "releasing tension".
 
 ## Part Ib. Q8 ~ Q7
 ### Predicting Q7 with Q8

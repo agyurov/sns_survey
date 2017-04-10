@@ -2,3 +2,4 @@
 
 library(XLConnect)
 library(ordinal)
+library(nortest)

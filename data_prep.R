@@ -152,7 +152,7 @@ df.list.na = lapply(df.list,rename.level,include.na=T)
 list2env(df.list,envir=.GlobalEnv)
 
 
-# data frames w/ithout NAs
+# factor data frames w/o NAs
 df.list2 = df.list
 names(df.list2) = paste0(names(df.list),"nona")
 # how many complete rows for each question set
@@ -160,4 +160,15 @@ df.list2 = lapply(df.list2,na.omit)
 unlist(lapply(df.list2,function(x)dim(x)[1]))
 list2env(df.list2,envir=.GlobalEnv)
 
+# numeric data frames w/o NAs 
+df.list2num = list()
+df.list2num = df.list2[which(qlen!=1)]
+df.list2num[names(df.list2num)[which(unlist(lapply(df.list2num,function(x)dim(x)[1])) == 0)]] = NULL
+df.list2num = lapply(df.list2num,fact2num)
+names(df.list2num) = paste0(names(df.list2num),"num")
+list2env(df.list2num,envir = .GlobalEnv)
 
+# Demographic daa
+names(df2)
+demo.dat = df2[,115:124]
+names(demo.dat)
