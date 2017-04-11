@@ -1,0 +1,128 @@
+q1.1_how many profiles do you have across all social network sites i e facebook twitter myspace etc _profiles
+q2.1_on average how often do you visit social network sites_SNSuseFreq
+q3.1_what is the total number of connections friends do you have on social network sites br if you have more than one profile just add them together even if friends overlap_friendnum
+q4.1_if you have more than one profile on social network sites about how much do your friends on these sites overlap_overlap
+q5.1_getting news and information how often do you use social network sites to_getlocnews
+q5.2_getting news and information how often do you use social network sites to_getnatnews
+q5.3_getting news and information how often do you use social network sites to_getcurrevents
+q5.4_getting news and information how often do you use social network sites to_sharenatnews
+q5.5_getting news and information how often do you use social network sites to_sharelocnews
+q5.6_getting news and information how often do you use social network sites to_sharecurrevents
+q5.7_getting news and information how often do you use social network sites to_discussnews
+q5.8_getting news and information how often do you use social network sites to_getinfolocevents
+q5.9_getting news and information how often do you use social network sites to_getinfohobby
+q5.10_getting news and information how often do you use social network sites to_getinfoentertain
+q5.11_getting news and information how often do you use social network sites to_getinfowork
+q6.1_sharing information asking questions organizing events how often do you use social network sites to_shareinfolocevents
+q6.2_sharing information asking questions organizing events how often do you use social network sites to_shareinfohobby
+q6.3_sharing information asking questions organizing events how often do you use social network sites to_shareinfoentertain
+q6.4_sharing information asking questions organizing events how often do you use social network sites to_shareinfowork
+q6.5_sharing information asking questions organizing events how often do you use social network sites to_opinionproduct
+q6.6_sharing information asking questions organizing events how often do you use social network sites to_opiniontravel
+q6.7_sharing information asking questions organizing events how often do you use social network sites to_opinionhobby
+q6.8_sharing information asking questions organizing events how often do you use social network sites to_orgeventfriends
+q6.9_sharing information asking questions organizing events how often do you use social network sites to_orgeventfamily
+q6.10_sharing information asking questions organizing events how often do you use social network sites to_orgeventwork
+q6.11_sharing information asking questions organizing events how often do you use social network sites to_orgevencommunity
+q7.1_promotion and humor how often do you use social network sites to_promoteactivism
+q7.2_promotion and humor how often do you use social network sites to_promotelocalevent
+q7.3_promotion and humor how often do you use social network sites to_promoteyourevent
+q7.4_promotion and humor how often do you use social network sites to_findjoke
+q7.5_promotion and humor how often do you use social network sites to_sharejoke
+q7.6_promotion and humor how often do you use social network sites to_discussjoke
+q8.1_relaxing and playing games how often do you use social network sites to_killtime
+q8.2_relaxing and playing games how often do you use social network sites to_releasetension
+q8.3_relaxing and playing games how often do you use social network sites to_overcomelone
+q8.4_relaxing and playing games how often do you use social network sites to_browsenoreason
+q8.5_relaxing and playing games how often do you use social network sites to_beentertained
+q8.6_relaxing and playing games how often do you use social network sites to_playgamesfriends
+q8.7_relaxing and playing games how often do you use social network sites to_playgamesstranger
+q8.8_relaxing and playing games how often do you use social network sites to_playgamesalone
+q8.9_relaxing and playing games how often do you use social network sites to_downloadmusic
+q9.1_being social i how often do you use social network sites to_meetnewpeoplesoc
+q9.2_being social i how often do you use social network sites to_meetnewpeopleprof
+q9.3_being social i how often do you use social network sites to_meetnewpeopleintro
+q9.4_being social i how often do you use social network sites to_commonlinepple
+q9.5_being social i how often do you use social network sites to_commclosefriendslocal
+q9.6_being social i how often do you use social network sites to_commclosefriendsld
+q9.7_being social i how often do you use social network sites to_commcoworkerlocal
+q9.8_being social i how often do you use social network sites to_commcoworkerld
+q9.9_being social i how often do you use social network sites to_commfamilylocal
+q9.10_being social i how often do you use social network sites to_commfamilyld
+q9.11_being social i how often do you use social network sites to_commrelativeloc
+q9.12_being social i how often do you use social network sites to_commrelativeld
+q10.1_being social ii how often do you use social network sites to_socialworld
+q10.2_being social ii how often do you use social network sites to_checkupfamfriends
+q10.3_being social ii how often do you use social network sites to_browsephoto
+q10.4_being social ii how often do you use social network sites to_shareinfogroup
+q10.5_being social ii how often do you use social network sites to_discussgroup
+q10.6_being social ii how often do you use social network sites to_birthdaywish
+q10.7_being social ii how often do you use social network sites to_announceaccomplish
+q11.1_how often do you announce personal events weddings birth of children death on social network sites_personalevent
+q12.1_searching for people and reconnecting how often do you use social network sites to_lookupclassmate
+q12.2_searching for people and reconnecting how often do you use social network sites to_lookupfriends
+q12.3_searching for people and reconnecting how often do you use social network sites to_classmatescontact
+q12.4_searching for people and reconnecting how often do you use social network sites to_friendscontact
+q12.5_searching for people and reconnecting how often do you use social network sites to_nocontact
+q12.6_searching for people and reconnecting how often do you use social network sites to_reconnect
+q12.7_searching for people and reconnecting how often do you use social network sites to_messagereconnect
+q12.8_searching for people and reconnecting how often do you use social network sites to_meetreconnect
+q13.1_since you first started using social network sites have you changed how often you login_changeUse
+q14.1_if you woke up tomorrow and fount out that_1
+q15.1_how many of your_localfriends
+q15.2_how many of your_distfriends
+q15.3_how many of your_localfamily
+q15.4_how many of your_distfamily
+q16.1_how often do you interact in person or by phone with_talklocalfriends
+q16.2_how often do you interact in person or by phone with_talkdistfriends
+q16.3_how often do you interact in person or by phone with_talklocalfamily
+q16.4_how often do you interact in person or by phone with_talkdistfamily
+q17.1_have any of the following events happened to you in the last six months please check all that apply_mlf_move
+q17.2_have any of the following events happened to you in the last six months please check all that apply_mlf_divorce
+q17.3_have any of the following events happened to you in the last six months please check all that apply_mlf_fired
+q17.4_have any of the following events happened to you in the last six months please check all that apply_mlf_newjob
+q17.5_have any of the following events happened to you in the last six months please check all that apply_mlf_birth
+q17.6_have any of the following events happened to you in the last six months please check all that apply_mlf_marriage
+q17.7_have any of the following events happened to you in the last six months please check all that apply_mlf_death
+q17.8_have any of the following events happened to you in the last six months please check all that apply_mlf_illness
+q18.1_here are a number of statements about characteristics that may or may not apply to you please indicate whether you agree or disagree with each statement_lifesat1
+q18.2_here are a number of statements about characteristics that may or may not apply to you please indicate whether you agree or disagree with each statement_lifesat2
+q18.3_here are a number of statements about characteristics that may or may not apply to you please indicate whether you agree or disagree with each statement_lifesat3
+q18.4_here are a number of statements about characteristics that may or may not apply to you please indicate whether you agree or disagree with each statement_lifesat4
+q18.5_here are a number of statements about characteristics that may or may not apply to you please indicate whether you agree or disagree with each statement_lifesat5
+q19.1_how strongly do you agree or disagree with the following statements_isel1
+q19.2_how strongly do you agree or disagree with the following statements_isel2
+q19.3_how strongly do you agree or disagree with the following statements_isel3
+q19.4_how strongly do you agree or disagree with the following statements_isel4
+q19.5_how strongly do you agree or disagree with the following statements_isel5
+q19.6_how strongly do you agree or disagree with the following statements_isel6
+q19.7_how strongly do you agree or disagree with the following statements_isel7
+q19.8_how strongly do you agree or disagree with the following statements_isel8
+q19.9_how strongly do you agree or disagree with the following statements_isel9
+q19.10_how strongly do you agree or disagree with the following statements_isel10
+q19.11_how strongly do you agree or disagree with the following statements_isel11
+q19.12_how strongly do you agree or disagree with the following statements_isel12
+q20.1_how strongly do you agree or disagree with the following statements part_bridge1
+q20.2_how strongly do you agree or disagree with the following statements part_bridge2
+q20.3_how strongly do you agree or disagree with the following statements part_bridge3
+q20.4_how strongly do you agree or disagree with the following statements part_bridge4
+q20.5_how strongly do you agree or disagree with the following statements part_bridge5
+q20.6_how strongly do you agree or disagree with the following statements part_bridge6
+q20.7_how strongly do you agree or disagree with the following statements part_bridge7
+q20.8_how strongly do you agree or disagree with the following statements part_bridge8
+q20.9_how strongly do you agree or disagree with the following statements part_bridge9
+q20.10_how strongly do you agree or disagree with the following statements part_bridge10
+q21.1_what is your age_age
+q22.1_what is your gender_gender
+q23.1_are you currently enrolled as a student_student
+q24.1_are you a full time or a part time student_student-type
+q25.1_which of the following categories best describes your employment status_employment
+q26.1_what is your relationship status_married
+q27.1_do you have children_children
+q28.1_what is your country of origin_country
+q29.1_what is your native language_language
+q30.1_within the last months have you moved to a new home at least km away from your prior residential location_moved
+q31.1_if you have any comments or questions about_1
+q32.1_respondentid_respondentid
+q33.1_startdate_startdate
+q34.1_ip address_ip.address
