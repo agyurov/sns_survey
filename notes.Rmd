@@ -68,3 +68,9 @@ Minimum 3 factors required. 4 factors are too many.
 par(mar = .pardefault$mar + c(0,5,0,0))
 plot.matrix(q10fa, cutoff = .5, main = "Q10 FA, cutoff .5", col = grey.colors(2))
 ```
+
+
+## Part II. Q10 vs Q11, Q10 vs Q19, Q10 vs Q20
+
+
+# Part III. proper analysis of q19
