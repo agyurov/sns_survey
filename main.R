@@ -1,6 +1,6 @@
 # main
 rm(list = ls())
-.pardefault = par()
+# .pardefault = par()
 wd = getwd()
 
 data_file = "all_data.RData"
@@ -11,7 +11,7 @@ source("functions.R")
 
 source("data_prep.R")
 
-source("analysis_q8.R")
+source("analysis.R")
 
 
 save.image(paste0(getwd(),"/","all_data.RData"))

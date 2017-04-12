@@ -1,40 +1,59 @@
 # Analysis
 
 
-# brute force factor analysis ---------------------------------------------
+# FA q8 -------------------------------------------------------------------
+
+q8fa = brute.force.fa(q8nonanum, scores = "regression")
+q8fa1 = factanal(q8nonanum, factors = 3, rotation = "promax")
+print(q8fa$`3factors`, cutoff = .4)
+print(q8fa1, cutoff = .3)
 
 
-df.list2num = list()
-df.list2num = df.list2[which(qlen!=1)]
-df.list2num[names(df.list2num)[which(unlist(lapply(df.list2num,function(x)dim(x)[1])) == 0)]] = NULL
-df.list2num = lapply(df.list2num,fact2num)
-names(df.list2num) = paste0(names(df.list2num),"num")
-list2env(df.list2num,envir = .GlobalEnv)
 
-fa.list = lapply(df.list2num,function(x)factanal(x,factors=floor(ncol(x)/2-1)))
-names(fa.list) = paste0(names(fa.list),"fa")
-# list2env(fa.list,envir = .GlobalEnv)
+# FA q8 and q7 ------------------------------------------------------------
 
-# Q8 ----------------------------------------------------------------------
-# Q8a: PCA, FA
-# Q8a1: remove outliers - none since scale questions. Normality assumption obv not met.
-# scaling not required
-q8pca = prcomp(q8nonanum)
-summary(q8pca)
-q8fa1 = factanal(q8nonanum,factors=3)
-q8fa2 = factanal(q8nonanum,factors=4)
-lapply(list(q8fa1,q8fa2),loadings)
+q7q8 = cbind(q7,q8)
+q7q8nona = na.omit(q7q8)
+q7q8nonanum = fact2num(q7q8nona)
 
-x1 = unclass(q8fa1$loadings)
-x2 = unclass(q8fa2$loadings)
+q7q8fa = brute.force.fa(q7q8nonanum, scores = "regression") # identified 5 and 6 factors
+frmla = formula(paste("~",paste(names(q7),collapse=" + ")))
+q7q8fa0 = factanal(x = frmla, factors =2, data = q7q8nonanum, scores = "regression")
 
-par(mfrow=c(3,1))
-apply(x1,2,barplot)
+q7q8fa1 = factanal(q7q8nonanum, factors = 5, rotation = "varimax")
+q7q8fa2 = factanal(q7q8nonanum, factors = 6, rotation = "varimax")
+q7q8fa3 = factanal(q7q8nonanum, factors = 5, rotation = "promax")
+q7q8fa4 = factanal(q7q8nonanum, factors = 6, rotation = "promax")
 
-par(mfrow=c(4,1))
-apply(x2,2,barplot)
+print(q7q8fa1, cutoff = .3)
+print(q7q8fa2, cutoff = .3)
+print(q7q8fa3, cutoff = .3)
+print(q7q8fa4, cutoff = .3)
 
-# Hypothesis A: got got friends and family -> play games alone
-q8q19 = cbind(q8,q19)
-q8q19nona = na.omit(q8q19)
+# par(mfrow=c(2,2))
+# plot.matrix(q7q8fa1, cutoff = .3, main = "Cutoff .3")
+# plot.matrix(q7q8fa2, cutoff = .3, main = "Cutoff .3")
+# plot.matrix(q7q8fa3, cutoff = .3, main = "Cutoff .3")
+# plot.matrix(q7q8fa4, cutoff = .3, main = "Cutoff .3")
 
+
+
+# Q8 ~ Q7 clms ------------------------------------------------------------
+q7fa = brute.force.fa(q7nonanum, scores = "regression")
+q7q8clms = clm.each(q7q8nona) # not a single good model (not surprisingly)
+q7q8clms.evals = lapply(q7q8clms, eval.model)
+
+# naive models, predict q8 with q8 & FA(q7)
+naivedf = cbind(q7q8nona[, grepl("q8", names(q7q8nona))], q7q8fa0$scores)
+naive1 = clm.each(naivedf,link = "logit") # q8.5_beentertained
+naive2 = clm.each(naivedf,link = "probit") # q8.5_beentertained
+naive3 = clm.each(naivedf,link = "cauchit") # nothing
+naive4 = clm.each(naivedf,link = "cloglog") # q8.5_beentertained
+
+# less naive models, predict q8 with q7
+pred = q7q8nona[,grepl("q7",names(q7q8nona))]
+resp = q7q8nona[,grepl("q8",names(q7q8nona))]
+lessnaive1 = model.list(x = pred, y = resp, link = "logit") # q8.1_killtime
+lessnaive2 = model.list(x = pred, y = resp, link = "probit") # q8.1_killtime, q8.5_beentertained
+lessnaive3 = model.list(x = pred, y = resp, link = "cauchit") # nothing
+lessnaive4 = model.list(x = pred, y = resp, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason

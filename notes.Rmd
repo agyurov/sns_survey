@@ -14,42 +14,47 @@ require(markdown)
 ## Data Summary
 
 ```{r, echo =F,fig.align='center'}
-plot.na(df2)
+# plot.na(df2)
 ```
 
 NA pattern unclear.
 
 # Part I. Examination of Q8 "relaxing and playing games how often do you use social network sites to"
-## Part Ia. PCA and FA
+## Part Ia. PCA
 
 Principal component analysis of q8 is adequate due to the 7 step scale of the answers. Normality assumption ont meat, but also not required. PCA applied to cleaned q8 with missing values removed.
 ```{r,results='hide',fig.align='center'}
 my.barplot(prcomp(q8nonanum)$sdev^2,main="Principal components for Q8",namez=names(q8nonanum))
 ```
 
-An automated procedure performs factor analysis on q8 by examining different number of factors based, partly on the PCA, and excludes those who do not pass significance. 2 factor decomposition does not pass and hence the hypothesis that Question8 can be viewed as a "socializing" vs "alone" question is rejected. The higher the correlation the brighter the color.
+## Part Ib. FA
 
-```{r, fig.align='center',fig.widt=4,fig.height=4}
-par(oma=.pardefault$oma + c(0,8,0,0))
-plot.matrix(factanal(q8nonanum,3),col=grey.colors(10))
-plot.matrix(factanal(q8nonanum,4),col=grey.colors(10))
+Factor analysis on Q8. Similar results for varimax and promax. The groupings are:
+
+* Factor1 (Games): playgamesfriends, plagamesstranger, playgamesalone
+* Factor2 (Spare time): killtime, browsenoreason, beentertained
+* Factor3: realeasetension, overcomelone
+
+Downloadmusic appears to be unrelated to the 3 identified above latent variables.
+
+```{r, echo=F}
+print(q8fa$`3factors`, cutoff = .4, sort = T)
+print(q8fa1, cutoff = .3, sort = T)
 ```
 
-The 3 factor analysis groups as follows:
+## Part Ic. FA on Q8 and Q7
 
-* Download music + play games with friends + being entertained
-* browsing for no reason + overcoming loneliness (+ releasing tension)
-* playing games alone
-
-The 4 factor analysis is essentially the same as the 3 factor with the addition of a 4th factor mostly representing "releasing tension".
-
-## Part Ib. Q8 ~ Q7
-### Predicting Q7 with Q8
-
-Thourough model inspection coming soon...
-
-```{r,echo=F}
-print(q8predq7accuracy)
+Downloadmusic still appears independent. At a .3 cutoff some mixtures occur:
+```{r, echo = F, fig.align = 'center'}
+par(mfrow=c(2,2), mar = .pardefault$mar - c(2,-3,2,2))
+plot.matrix(q7q8fa1, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
+plot.matrix(q7q8fa2, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
+plot.matrix(q7q8fa3, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
+plot.matrix(q7q8fa4, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
 ```
 
-### Predicting Q7 with Q8_PCA
+## Part Id. CLM Q8 ~ Q7
+```{r}
+dim(q7q8nona)
+```
+Hence, pca predictors are requried. PCA of Q7 used in combination 

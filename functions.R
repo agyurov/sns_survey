@@ -7,21 +7,30 @@ unique.data = function(df){
 }
 
 # plot.matrix
-plot.matrix = function(x,col=grey.colors(5), ...){
+plot.matrix = function(x, cutoff=NULL, ...){
   if(class(x) == "factanal"){
-    x = unlist(x$loadings)
-    image(t(apply(x,2,rev)),axes=F,col=col, ...)
+    x = unclass(x$loadings)
+    if(!is.null(cutoff)){
+      x[x<cutoff] = 0
+      x[x != 0] = 1
+    }
+    image(t(apply(x,2,rev)),axes=F, ...)
     lnx = par("usr")[2]-par("usr")[1]
     lny = par("usr")[4]-par("usr")[3]
     # abline(v = seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),col=2)
     
     axis(1,at = lnx/ncol(x)*(0:(ncol(x)-1)),labels=paste("factor",1:ncol(x)),xpd=NA) # 1/2*ln/ncol(x)+
-    axis(2,at = lny/nrow(x)*(0:(nrow(x)-1)),labels=rownames(x),las=1,xpd=NA)
+    axis(2,at = lny/nrow(x)*(0:(nrow(x)-1)),labels=rev(rownames(x)),las=1,xpd=NA)
     segments(seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),rep(par("usr")[3],ncol(x)),
              seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),rep(par("usr")[4],ncol(x)),col=2)
     return(invisible(NULL))
   }
-  image(t(apply(x,2,rev)),col=col, ...)
+  if(!is.null(cutoff)){
+    x[x<cutoff] = 0
+    col = x
+    col[col != 0] = 1
+  }
+  image(t(apply(x,2,rev)), ...)
 }
 
 # proper positions for text on plots
@@ -281,14 +290,20 @@ model.list = function(x,y, ...){
 }
 
 # Predicting each var in a df
-clm.each = function(x){
+clm.each = function(x,...){
   clms = list()
+  j = 0
   for(i in 1:ncol(x)){
-    frmla = as.formula(paste0(names(x)[i],"~."))
-    clms[[i]] = step(clm(frmla , data =x),trace=0)
+    if(!"factor" %in% class(x[,i])){
+      next 
+    }
+    j = j + 1
     cat(paste0("Estimating model ",i," of ", ncol(x),"\n"))
+    frmla = as.formula(paste0(names(x)[i],"~."))
+    clms[[j]] = step(clm(frmla , data =x,...),trace=0)
+    names(clms)[[j]] = names(x)[i]
   }
-  names(clms) = names(x)
+  # names(clms) = names(x)
   return(clms)
 }
 
@@ -299,5 +314,8 @@ eval.model = function(x,...){
     acf(resid(x),...)
     cat(paste0(lillie.test(resid(x))$p.value,"\n"))
     return(invisible(NULL))
+  }
+  if(class(x) == "clm"){
+    return(class.pred(x))
   }
 }
