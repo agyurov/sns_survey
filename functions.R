@@ -115,18 +115,18 @@ my.barplot.old = function(df,margins=NULL, nas, ...){
 }
 
 # rename levels to max level
-rename.level = function(df,include.na = NULL){
+rename.level = function(df,include.na = NULL, ordered){
   if(ncol(df)<2 & !is.factor(df[,1])){
     return(df)
   }
   max.level = which.max(unlist(lapply(df,function(x) length(levels(x)))))
   new.level = levels(df[,max.level])
   if(!is.null(include.na)){
-    df = lapply(df,function(x,y) factor(as.character(x),new.level,ordered = T),y=new.level)
+    df = lapply(df,function(x,y) factor(as.character(x),new.level,ordered = ordered),y=new.level)
     df = do.call(cbind.data.frame,lapply(df,addNA))
   }
   if(is.null(include.na)){
-    df = lapply(df,function(x,y) factor(as.character(x),new.level,ordered = T),y=new.level)
+    df = lapply(df,function(x,y) factor(as.character(x),new.level,ordered = ordered),y=new.level)
     df = do.call(cbind.data.frame,df)
   }
   
@@ -214,8 +214,8 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
 }
 
 # save variables to data_file.RData
-record = function(file){
-  save.image(paste0(getwd(),"/",deparse(substitute(file)),".RData"))
+record = function(file = data_file){
+  save.image(file)
 }
 
 # data frame factor to numerics
@@ -318,4 +318,18 @@ eval.model = function(x,...){
   if(class(x) == "clm"){
     return(class.pred(x))
   }
+}
+
+# ordered factor to un-ordered factor. non factors remain the same
+ordfactor = function(x, ordered){
+  if(is.factor(x)){
+    return(factor(x, ordered = ordered))
+  }else{
+    return(x)
+  }
+}
+
+# as.unordered applied to data frames
+ordfactordf = function(x,ordered){
+  return(do.call(cbind.data.frame,lapply(x,ordfactor,ordered = ordered)))
 }

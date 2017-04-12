@@ -147,8 +147,8 @@ df.list = lapply(df.list,as.data.frame)
 
 
 # Relevel all questions
-df.list = lapply(df.list,rename.level)
-df.list.na = lapply(df.list,rename.level,include.na=T)
+df.list = lapply(df.list,rename.level,ordered = F)
+df.list.na = lapply(df.list,rename.level,include.na=T, ordered = F)
 list2env(df.list,envir=.GlobalEnv)
 
 

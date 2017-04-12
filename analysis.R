@@ -57,3 +57,23 @@ lessnaive1 = model.list(x = pred, y = resp, link = "logit") # q8.1_killtime
 lessnaive2 = model.list(x = pred, y = resp, link = "probit") # q8.1_killtime, q8.5_beentertained
 lessnaive3 = model.list(x = pred, y = resp, link = "cauchit") # nothing
 lessnaive4 = model.list(x = pred, y = resp, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
+
+
+# Q10 ---------------------------------------------------------------------
+# H0: single latent factor - nope
+q10fa = brute.force.fa(q10nonanum)
+q10fa = factanal(q10nonanum, factors = 3)
+
+# H1: q10 ~ q11
+q10q11 = cbind(q10,q11)
+q10q11nona = na.omit(q10q11)
+q10q11nonanum = fact2num(q10q11nona)
+
+pred = q10q11nona[,grepl("q11",names(q10q11nona))]
+resp = q10q11nona[,grepl("q10",names(q10q11nona))]
+q10m1 = model.list(x = pred, y = resp, link = "logit")
+q10m2 = clm.each(q10q11nona, link = "cloglog") # logit nope, probit nope, cauchit nope, cloglog - q10.3_browsephoto
+
+
+
+
