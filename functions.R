@@ -90,13 +90,11 @@ my.count = function(x){
 }
 
 # proper barplot
-my.barplot.old = function(df,margins=NULL, nas, ...){
+my.barplot.old = function(df, ...){
   df = df[,!sapply(df,is.numeric)]
   if(1 %in% dim(df) | 0 %in% dim(df)){
     return()
   }
-  if(is.null(margins)) margins<- -1
-  par(mar=.pardefault$mar + margins)
   # layout(matrix(1:2,nrow=2,byrow=F),height=c(8,1))
   x = lapply(df,table)
   ps = barplot(as.matrix(x[[1]]),width=1/length(x),xlim=c(0,1),col=grey.colors(max(unlist(lapply(x,length)))),...)

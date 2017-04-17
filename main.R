@@ -11,9 +11,12 @@ source("functions.R")
 
 source("data_prep.R")
 
-source("analysis.R")
+source("analysis_q8.R")
 
+source("analysis_q10.R")
 
-save.image(paste0(getwd(),"/","all_data.RData"))
+source("analysis_q19.R")
+
+# save.image(paste0(getwd(),"/","all_data.RData"))
 # save.image(paste0(getwd(),"/bucket.RData"))
 # browseURL(paste('file://', file.path(getwd(),'notes.html'), sep=''))

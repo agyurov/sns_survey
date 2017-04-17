@@ -27,9 +27,15 @@ Principal component analysis of q8 is adequate due to the 7 step scale of the an
 my.barplot(prcomp(q8nonanum)$sdev^2,main="Principal components for Q8",namez=names(q8nonanum))
 ```
 
-## Part Ib. FA
+## Part Ib. Q8 FA
 
-Factor analysis on Q8. Similar results for varimax and promax. The groupings are:
+3, 4 and 5 factors are acceptable. Shown are only 3 and 4 factors, as 5 appear too many for 9 variables.
+
+```{r, echo=F,fig.align='center'}
+par(mfrow=c(1,2), mar = .pardefault$mar + c(0,2,0,2))
+plot.matrix(q8fa3, cutoff=.4,main="Q8fa3, cutoff = .4",col = grey.colors(2))
+plot.matrix(q8fa4, cutoff=.4,main="Q8fa3, cutoff = .4", col = grey.colors(2))
+```
 
 * Factor1 (Games): playgamesfriends, plagamesstranger, playgamesalone
 * Factor2 (Spare time): killtime, browsenoreason, beentertained
@@ -37,9 +43,13 @@ Factor analysis on Q8. Similar results for varimax and promax. The groupings are
 
 Downloadmusic appears to be unrelated to the 3 identified above latent variables.
 
+
+
 ```{r, echo=F}
-print(q8fa$`3factors`, cutoff = .4, sort = T)
-print(q8fa1, cutoff = .3, sort = T)
+par(mfrow=c(1,2), mar = .pardefault$mar - c(0,2,0,2))
+my.barplot(q8fa3$uniquenesses,namez = names(q8fa3$uniquenesses),main="Unique variance")
+my.barplot(q8fa4$uniquenesses,namez = names(q8fa4$uniquenesses),main="Unique variance")
+
 ```
 
 ## Part Ic. FA on Q8 and Q7
@@ -53,24 +63,34 @@ plot.matrix(q7q8fa3, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
 plot.matrix(q7q8fa4, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
 ```
 
-## Part Id. CLM Q8 ~ Q7
-```{r}
-dim(q7q8nona)
-```
-Hence, pca predictors are requried. PCA of Q7 used in combination
-
 
 # Part II. FA Q10
 
 Minimum 3 factors required. 4 factors are too many.
 
-```{r}
-par(mar = .pardefault$mar + c(0,5,0,0))
-plot.matrix(q10fa, cutoff = .5, main = "Q10 FA, cutoff .5", col = grey.colors(2))
+```{r,fig.align='center'}
+par(mar = .pardefault$mar + c(-2,4,-3,-2), mfrow=c(2,1))
+plot.matrix(q10fa,cutoff=.33,col=grey.colors(2),main="Cutoff .33")
+my.barplot(q10fa$uniquenesses,namez=names(q10fa$uniquenesses),main = "Unique variance")
 ```
 
 
-## Part II. Q10 vs Q11, Q10 vs Q19, Q10 vs Q20
-
-
 # Part III. proper analysis of q19
+Acceptable factors are 2 to 7.
+
+# Part IV. proper analysis of q20
+
+
+
+```{r, fig.align='center'}
+par(mar = .pardefault$mar + c(-2,4,-3,-2), mfrow=c(2,1))
+plot.matrix(q10q11fa$`3factors`,cutoff=.35,col=grey.colors(2),main="Cutoff .35")
+my.barplot(q10q11fa$`3factors`$uniquenesses,
+           namez=names(q10q11fa$`3factors`$uniquenesses),main = "Unique variance")
+```
+
+## Part X. Q10 vs Q19, Q10 vs Q20
+## Part II. Q10 vs Q11
+FA points towards 3 factors. 4 factors identify Q11 as a separate factor.
+
+
