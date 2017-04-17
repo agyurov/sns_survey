@@ -11,6 +11,8 @@ source("functions.R")
 
 source("data_prep.R")
 
+source("analysis.R")
+
 source("analysis_q8.R")
 
 source("analysis_q10.R")

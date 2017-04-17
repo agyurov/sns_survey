@@ -10,10 +10,10 @@ unique.data = function(df){
 plot.matrix = function(x, cutoff=NULL, ...){
   if(class(x) == "factanal"){
     x = unclass(x$loadings)
-    if(!is.null(cutoff)){
-      x[x<cutoff] = 0
-      x[x != 0] = 1
-    }
+    # if(!is.null(cutoff)){
+    #   x[x<cutoff] = 0
+    #   x[x != 0] = 1
+    # }
     image(t(apply(x,2,rev)),axes=F, ...)
     lnx = par("usr")[2]-par("usr")[1]
     lny = par("usr")[4]-par("usr")[3]
@@ -23,6 +23,7 @@ plot.matrix = function(x, cutoff=NULL, ...){
     axis(2,at = lny/nrow(x)*(0:(nrow(x)-1)),labels=rev(rownames(x)),las=1,xpd=NA)
     segments(seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),rep(par("usr")[3],ncol(x)),
              seq(par("usr")[1],par("usr")[2],by=lnx/ncol(x)),rep(par("usr")[4],ncol(x)),col=2)
+    title(paste0("Cutoff ",cutoff))
     return(invisible(NULL))
   }
   if(!is.null(cutoff)){
@@ -259,7 +260,11 @@ my.barplot = function(x, namez, ...){
 class.pred = function(model){
   tbl = table(model$y,predict(model,type="class")$fit,useNA = "no")
   perc = round(diag(tbl)/rowSums(tbl),2)
-  return(list(table = tbl, percentages = perc))
+  pergroup = rowSums(tbl)
+  total = sum(pergroup)
+  perc2 = round(perc*pergroup/total,2)
+  return(list(table = tbl, percentages = perc,
+              pop = pergroup, total = sum(perc2)))
 }
 
 # Predicting a questions. df of the form cbind(Q1,Q2)

@@ -13,18 +13,17 @@ require(markdown)
 
 ## Data Summary
 
-```{r, echo =F,fig.align='center'}
-# plot.na(df2)
-```
 
 NA pattern unclear.
 
 # Part I. Examination of Q8 "relaxing and playing games how often do you use social network sites to"
+
 ## Part Ia. PCA
 
 Principal component analysis of q8 is adequate due to the 7 step scale of the answers. Normality assumption ont meat, but also not required. PCA applied to cleaned q8 with missing values removed.
+
 ```{r,results='hide',fig.align='center'}
-my.barplot(prcomp(q8nonanum)$sdev^2,main="Principal components for Q8",namez=names(q8nonanum))
+# my.barplot(prcomp(q8nonanum)$sdev^2,main="Principal components for Q8",namez=names(q8nonanum))
 ```
 
 ## Part Ib. Q8 FA
@@ -45,7 +44,7 @@ Downloadmusic appears to be unrelated to the 3 identified above latent variables
 
 
 
-```{r, echo=F}
+```{r, echo=F,fig.align='center'}
 par(mfrow=c(1,2), mar = .pardefault$mar - c(0,2,0,2))
 my.barplot(q8fa3$uniquenesses,namez = names(q8fa3$uniquenesses),main="Unique variance")
 my.barplot(q8fa4$uniquenesses,namez = names(q8fa4$uniquenesses),main="Unique variance")
@@ -77,6 +76,10 @@ my.barplot(q10fa$uniquenesses,namez=names(q10fa$uniquenesses),main = "Unique var
 
 # Part III. proper analysis of q19
 Acceptable factors are 2 to 7.
+
+```{r, fig.align='center'}
+
+```
 
 # Part IV. proper analysis of q20
 

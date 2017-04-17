@@ -21,10 +21,10 @@ q19fa7 = factanal(q19nonanum, factors = 7)
 
 
 # FA plots ----------------------------------------------------------------
-par(mar = .pardefault$mar,mfrow=c(3,1))
-plot.matrix(q19fa2,cutoff=.15,col=grey.colors(2),main="2 factors, cutoff .15")
-plot.matrix(q19fa3,cutoff=.3,col=grey.colors(2), main="3 factors, cutoff .3")
-plot.matrix(q19fa4,cutoff=.25,col=grey.colors(2), main="4 factors, cutoff .25")
+par(mar = .pardefault$mar + c(0,4,-2,0),mfrow=c(3,1))
+plot.matrix(q19fa2,cutoff=.15,col=grey.colors(3))
+plot.matrix(q19fa3,cutoff=.33,col=grey.colors(3))
+plot.matrix(q19fa4,cutoff=.32,col=grey.colors(3))
 
 
 # h0 teset hypothesis that the Groups are governed by the same latent variables

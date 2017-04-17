@@ -51,12 +51,12 @@ naive3 = clm.each(naivedf,link = "cauchit") # nothing
 naive4 = clm.each(naivedf,link = "cloglog") # q8.5_beentertained
 
 # less naive models, predict q8 with q7
-pred = q7q8nona[,grepl("q7",names(q7q8nona))]
-resp = q7q8nona[,grepl("q8",names(q7q8nona))]
-lessnaive1 = model.list(x = pred, y = resp, link = "logit") # q8.1_killtime
-lessnaive2 = model.list(x = pred, y = resp, link = "probit") # q8.1_killtime, q8.5_beentertained
-lessnaive3 = model.list(x = pred, y = resp, link = "cauchit") # nothing
-lessnaive4 = model.list(x = pred, y = resp, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
+pred1 = q7q8nona[,grepl("q7",names(q7q8nona))]
+resp1 = q7q8nona[,grepl("q8",names(q7q8nona))]
+lessnaive1 = model.list(x = pred1, y = resp1, link = "logit") # q8.1_killtime
+lessnaive2 = model.list(x = pred1, y = resp1, link = "probit") # q8.1_killtime, q8.5_beentertained
+lessnaive3 = model.list(x = pred1, y = resp1, link = "cauchit") # nothing
+lessnaive4 = model.list(x = pred1, y = resp1, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
 
 
 # Q10 ---------------------------------------------------------------------
