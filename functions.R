@@ -268,16 +268,16 @@ class.pred = function(model){
 }
 
 # Predicting a questions. df of the form cbind(Q1,Q2)
-model.list = function(x,y, ...){
+model.list = function(pred,resp, ...){
   # x predictors
   # y responses
   clms = list()
-  x = as.data.frame(x)
-  y = as.data.frame(y)
+  pred = as.data.frame(pred)
+  resp = as.data.frame(resp)
   
-  for(i in 1:ncol(y)){
-    df = cbind(x,Y=y[,i])
-    frmla = as.formula(paste0("Y"," ~ ",paste0(names(x),collapse=" + ")))
+  for(i in 1:ncol(resp)){
+    df = cbind(pred,Y=resp[,i])
+    frmla = as.formula(paste0("Y"," ~ ",paste0(names(pred),collapse=" + ")))
     # perform LM if numeric
     if(is.numeric(df$Y)){
       clms[[i]] = step(lm(formula=frmla,data=df,...),test="F",trace = 0)
@@ -286,9 +286,9 @@ model.list = function(x,y, ...){
     if(!is.numeric(df$Y)){
       clms[[i]] = step(clm(formula=frmla,data=df,...),test="Chisq",trace = 0)
     }
-    cat(paste0("Estimating model ",i," of ", ncol(y),"\n"))
+    cat(paste0("Estimating model ",i," of ", ncol(resp),"\n"))
   }
-  names(clms) = names(y) 
+  names(clms) = names(resp) 
   return(clms)
 }
 
@@ -335,4 +335,19 @@ ordfactor = function(x, ordered){
 # as.unordered applied to data frames
 ordfactordf = function(x,ordered){
   return(do.call(cbind.data.frame,lapply(x,ordfactor,ordered = ordered)))
+}
+
+# pred.clm, CLM or list of CLMs
+plot.clm = function(x,type="l",lwd=3,...){
+  if(class(x)!="list")x = list(x)
+  plot(rep(1,length(x[[1]]$y)),type="l",col=2,lwd=lwd,bty="n",ylab="",yaxt="n",ylim=c(.8,.8+length(x)*.2))
+  for(i in 1:length(x)){
+    lines(rep(1,length(x[[1]]$y)) +.2*i,col=2,lwd=lwd)
+    z = x[[i]]
+    out = z$y == predict(x[[i]],type="class")$fit
+    out[!out] = NA
+    lines(out+.2*i - .2,type=type,lwd=lwd,...)
+    legend("bottom",c("Correct prediction","Wrong prediction"),fill=c(1,2),bty="n",horiz=T,xpd=NA,...)
+  }
+  text(x = mean(par("usr")[1:2]),y = seq(.9,.9+length(x)*.2-.1,.2), labels=names(x),xpd=NA)
 }

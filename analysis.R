@@ -51,53 +51,197 @@ q7q8clms.evals = lapply(q7q8clms, eval.model)
 # naive4 = clm.each(naivedf,link = "cloglog") # q8.5_beentertained
 
 # less naive models, predict q8 with q7
-pred1 = q7q8nona[,grepl("q7",names(q7q8nona))]
-resp1 = q7q8nona[,grepl("q8",names(q7q8nona))]
-lessnaive1 = model.list(x = pred1, y = resp1, link = "logit") # q8.1_killtime
-lessnaive2 = model.list(x = pred1, y = resp1, link = "probit") # q8.1_killtime, q8.5_beentertained
-lessnaive3 = model.list(x = pred1, y = resp1, link = "cauchit") # nothing
-lessnaive4 = model.list(x = pred1, y = resp1, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
+pred1q7q8 = q7q8nona[,grepl("q7",names(q7q8nona))]
+resp1q7q8 = q7q8nona[,grepl("q8",names(q7q8nona))]
+q7q8m1 = model.list(pred = pred1q7q8, resp = resp1q7q8, link = "logit") # q8.1_killtime
+q7q8m2 = model.list(pred = pred1q7q8, resp = resp1q7q8, link = "probit") # q8.1_killtime, q8.5_beentertained
+q7q8m3 = model.list(pred = pred1q7q8, resp = resp1q7q8, link = "cauchit") # nothing
+q7q8m4 = model.list(pred = pred1q7q8, resp = resp1q7q8, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
 
 
-# Evaluate the above models ------------------------------------  `-----------
-par(mfrow=c(2,2))
-my.barplot(unlist(lapply(lessnaive1,function(x) eval.model(x)$total)),
-           namez = names(lessnaive1),main="logit")
-my.barplot(unlist(lapply(lessnaive2,function(x) eval.model(x)$total)),
-           namez = names(lessnaive2),main="probit")
-my.barplot(unlist(lapply(lessnaive3,function(x) eval.model(x)$total)),
-           namez = names(lessnaive3),main="cauchit")
-my.barplot(unlist(lapply(lessnaive4,function(x) eval.model(x)$total)),
-           namez = names(lessnaive4),main="cloglog")
+# Q8, Q1 plots
 
-
-plot(unlist(lapply(lessnaive1,function(x) eval.model(x)$total)),type="l",col=1
+plot(unlist(lapply(q7q8m1,function(x) eval.model(x)$total)),type="l",col=1
      ,ylim=c(.3,1),ylab="Accuracy",xaxt="n")
-lines(unlist(lapply(lessnaive2,function(x) eval.model(x)$total)),col=2)
-lines(unlist(lapply(lessnaive3,function(x) eval.model(x)$total)),col=3)
-lines(unlist(lapply(lessnaive4,function(x) eval.model(x)$total)),col=4)
+lines(unlist(lapply(q7q8m2,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q7q8m3,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q7q8m4,function(x) eval.model(x)$total)),col=4)
 grid(10,2)
-text(seq(1,length(lessnaive1),len=length(lessnaive1)),
-     rep(par("usr")[3],length(lessnaive1)),
-     labels=names(lessnaive1),xpd=NA,srt=45)
+text(seq(1,length(q7q8m1),len=length(q7q8m1)),
+     rep(par("usr")[3],length(q7q8m1)),
+     labels=names(q7q8m1),xpd=NA,srt=45)
 legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4)
 
+plot.clm(q7q8m1,lwd=5)
+plot.clm(q7q8m2,lwd=5)
+plot.clm(q7q8m3,lwd=5)
+plot.clm(q7q8m4,lwd=5)
+
+# ... and vice versa
+
+q7q8m11 = model.list(pred = resp1q7q8, resp = pred1q7q8, link = "logit") # q8.1_killtime
+q7q8m21 = model.list(pred = resp1q7q8, resp = pred1q7q8, link = "probit") # q8.1_killtime, q8.5_beentertained
+q7q8m31 = model.list(pred = resp1q7q8, resp = pred1q7q8, link = "cauchit") # nothing
+q7q8m41 = model.list(pred = resp1q7q8, resp = pred1q7q8, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
+
+plot(unlist(lapply(q7q8m11,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n")
+lines(unlist(lapply(q7q8m21,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q7q8m31,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q7q8m41,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(q7q8m11),len=length(q7q8m11)),
+     rep(par("usr")[3],length(q7q8m11)),
+     labels=names(q7q8m11),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4)
+
+
+plot.clm(q7q8m11,lwd=5)
+plot.clm(q7q8m21,lwd=5)
+plot.clm(q7q8m31,lwd=5)
+plot.clm(q7q8m4,lwd=5)
+
+
+
+
+# Q10 ~ Q19 ---------------------------------------------------------------
+
+q10q19 = cbind(q10,q19)
+q10q19nona = na.omit(q10q19)
+q10q19nonanum = fact2num(q10q19nona)
+
+# dim 68x19. Require FA prior to modelling
+q10q19fa = brute.force.fa(q10q19nonanum,scores="regression")
+
+# less naive models, predict q10 with q19
+pred1q10q19 = q10q19nona[,grepl("q19",names(q10q19nona))]
+# pred1q10q19 = q10q19fa$`4factors`$scores
+# pred1q10q19 = q10q19fa$`5factors`$scores
+# pred1q10q19 = q10q19fa$`6factors`$scores
+# pred1q10q19 = q10q19fa$`7factors`$scores
+# pred1q10q19 = q10q19fa$`8factors`$scores
+
+resp1q10q19 = q10q19nona[,grepl("q10",names(q10q19nona))]
+q10q19m1 = model.list(pred = pred1q10q19, resp = resp1q10q19, link = "logit")
+q10q19m2 = model.list(pred = pred1q10q19, resp = resp1q10q19, link = "probit")
+q10q19m3 = model.list(pred = pred1q10q19, resp = resp1q10q19, link = "cauchit")
+q10q19m4 = model.list(pred = pred1q10q19, resp = resp1q10q19, link = "cloglog")
+
+# Q10, Q19 plots
+
+plot(unlist(lapply(q10q19m1,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="")
+lines(unlist(lapply(q10q19m2,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q10q19m3,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q10q19m4,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(q10q19m1),len=length(q10q19m1)),
+     rep(par("usr")[3],length(q10q19m1)),
+     labels=names(q10q19m1),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4)
+
+# more plots
+plot.clm(q10q19m1,lwd=5)
+plot.clm(q10q19m2,lwd=5)
+plot.clm(q10q19m3,lwd=5)
+plot.clm(q10q19m4,lwd=5)
 
 
 # ... and vice versa
 
-lessnaive11 = model.list(x = resp1, y = pred1, link = "logit") # q8.1_killtime
-lessnaive21 = model.list(x = resp1, y = pred1, link = "probit") # q8.1_killtime, q8.5_beentertained
-lessnaive31 = model.list(x = resp1, y = pred1, link = "cauchit") # nothing
-lessnaive41 = model.list(x = resp1, y = pred1, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
+q10q19m11 = model.list(pred = resp1q10q19, resp = pred1q10q19, link = "logit") # q8.1_killtime
+q10q19m21 = model.list(pred = resp1q10q19, resp = pred1q10q19, link = "probit") # q8.1_killtime, q8.5_beentertained
+q10q19m31 = model.list(pred = resp1q10q19, resp = pred1q10q19, link = "cauchit") # nothing
+q10q19m41 = model.list(pred = resp1q10q19, resp = pred1q10q19, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
 
-plot(unlist(lapply(lessnaive11,function(x) eval.model(x)$total)),type="l",col=1
+plot(unlist(lapply(q10q19m11,function(x) eval.model(x)$total)),type="l",col=1
      ,ylim=c(.3,1),ylab="Accuracy",xaxt="n")
-lines(unlist(lapply(lessnaive21,function(x) eval.model(x)$total)),col=2)
-lines(unlist(lapply(lessnaive31,function(x) eval.model(x)$total)),col=3)
-lines(unlist(lapply(lessnaive41,function(x) eval.model(x)$total)),col=4)
+lines(unlist(lapply(q10q19m21,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q10q19m31,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q10q19m41,function(x) eval.model(x)$total)),col=4)
 grid(10,2)
-text(seq(1,length(lessnaive11),len=length(lessnaive11)),
-     rep(par("usr")[3],length(lessnaive11)),
-     labels=names(lessnaive11),xpd=NA,srt=45)
+text(seq(1,length(q10q19m11),len=length(q10q19m11)),
+     rep(par("usr")[3],length(q10q19m11)),
+     labels=names(q10q19m11),xpd=NA,srt=45)
 legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4)
+
+# more plots
+plot.clm(q10q19m11,lwd=5)
+plot.clm(q10q19m21,lwd=5)
+plot.clm(q10q19m31,lwd=5)
+plot.clm(q10q19m41,lwd=5)
+
+
+
+
+
+
+# Q10 ~ Q20 ---------------------------------------------------------------
+
+q10q20 = cbind(q10,q20)
+q10q20nona = na.omit(q10q20)
+q10q20nonanum = fact2num(q10q20nona)
+
+# dim 68x20. Require FA prior to modelling
+q10q20fa = brute.force.fa(q10q20nonanum,scores="regression")
+
+# less naive models, predict q10 with q20
+pred1q10q20 = q10q20nona[,grepl("q20",names(q10q20nona))]
+# pred1q10q20 = q10q20fa$`4factors`$scores
+# pred1q10q20 = q10q20fa$`5factors`$scores
+# pred1q10q20 = q10q20fa$`6factors`$scores
+# pred1q10q20 = q10q20fa$`7factors`$scores
+# pred1q10q20 = q10q20fa$`8factors`$scores
+
+resp1q10q20 = q10q20nona[,grepl("q10",names(q10q20nona))]
+q10q20m1 = model.list(pred = pred1q10q20, resp = resp1q10q20, link = "logit")
+q10q20m2 = model.list(pred = pred1q10q20, resp = resp1q10q20, link = "probit")
+q10q20m3 = model.list(pred = pred1q10q20, resp = resp1q10q20, link = "cauchit")
+q10q20m4 = model.list(pred = pred1q10q20, resp = resp1q10q20, link = "cloglog")
+
+# Q10, Q20 plots
+
+plot(unlist(lapply(q10q20m1,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="")
+lines(unlist(lapply(q10q20m2,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q10q20m3,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q10q20m4,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(q10q20m1),len=length(q10q20m1)),
+     rep(par("usr")[3],length(q10q20m1)),
+     labels=names(q10q20m1),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4)
+
+# more plots
+plot.clm(q10q20m1,lwd=5)
+plot.clm(q10q20m2,lwd=5)
+plot.clm(q10q20m3,lwd=5)
+plot.clm(q10q20m4,lwd=5)
+
+
+# ... and vice versa
+
+q10q20m11 = model.list(pred = resp1q10q20, resp = pred1q10q20, link = "logit") # q8.1_killtime
+q10q20m21 = model.list(pred = resp1q10q20, resp = pred1q10q20, link = "probit") # q8.1_killtime, q8.5_beentertained
+q10q20m31 = model.list(pred = resp1q10q20, resp = pred1q10q20, link = "cauchit") # nothing
+q10q20m41 = model.list(pred = resp1q10q20, resp = pred1q10q20, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
+
+plot(unlist(lapply(q10q20m11,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n")
+lines(unlist(lapply(q10q20m21,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q10q20m31,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q10q20m41,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(q10q20m11),len=length(q10q20m11)),
+     rep(par("usr")[3],length(q10q20m11)),
+     labels=names(q10q20m11),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4)
+
+# more plots
+plot.clm(q10q20m11,lwd=5)
+plot.clm(q10q20m21,lwd=5)
+plot.clm(q10q20m31,lwd=5)
+plot.clm(q10q20m41,lwd=5)
+
+
+

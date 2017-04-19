@@ -63,6 +63,10 @@ my.barplot(q10fa$uniquenesses,namez=names(q10fa$uniquenesses),main = "Unique var
 # Analysis of Q19
 Acceptable factors are 2 to 7.
 
+```{r, fig.align='center', fig.cap='Summary of counts'}
+par(mar = .pardefault$mar + c(2,0,0,8))
+my.barplot.old(q19)
+```
 ```{r, fig.align='center',fig.cap='Factor loadings'}
 par(mar = .pardefault$mar + c(0,4,-2,0),mfrow=c(1,3))
 plot.matrix(q19fa2,cutoff=.15,col=grey.colors(3))
@@ -102,45 +106,116 @@ my.barplot(q20fa4$uniquenesses,namez = names(q20fa4$uniquenesses),main="Unique v
 my.barplot(q20fa5$uniquenesses,namez = names(q20fa5$uniquenesses),main="Unique variance")
 ```
 
+----
 
 # Predictive models
-
-
-
-----
 
 ## Predictive models: Q8 ~ Q7
 
 ```{r, echo = F, fig.align = 'center',fig.cap='Model predictive accuracy'}
 par(mfrow=c(1,2), mar = .pardefault$mar + c(0,-1,0,-1))
 
-plot(unlist(lapply(lessnaive1,function(x) eval.model(x)$total)),type="l",col=1
-     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="")
-lines(unlist(lapply(lessnaive2,function(x) eval.model(x)$total)),col=2)
-lines(unlist(lapply(lessnaive3,function(x) eval.model(x)$total)),col=3)
-lines(unlist(lapply(lessnaive4,function(x) eval.model(x)$total)),col=4)
+plot(unlist(lapply(q7q8m1,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="",main="Q8 ~ Q7")
+lines(unlist(lapply(q7q8m2,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q7q8m3,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q7q8m4,function(x) eval.model(x)$total)),col=4)
 grid(10,2)
-text(seq(1,length(lessnaive1),len=length(lessnaive1)),
-     rep(par("usr")[3],length(lessnaive1)),
-     labels=names(lessnaive1),xpd=NA,srt=45)
+text(seq(1,length(q7q8m1),len=length(q7q8m1)),
+     rep(par("usr")[3],length(q7q8m1)),
+     labels=names(q7q8m1),xpd=NA,srt=45)
 legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4,xpd=NA)
 
-plot(unlist(lapply(lessnaive11,function(x) eval.model(x)$total)),type="l",col=1
-     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="")
-lines(unlist(lapply(lessnaive21,function(x) eval.model(x)$total)),col=2)
-lines(unlist(lapply(lessnaive31,function(x) eval.model(x)$total)),col=3)
-lines(unlist(lapply(lessnaive41,function(x) eval.model(x)$total)),col=4)
+plot(unlist(lapply(q7q8m11,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="",main="Q7 ~ Q8")
+lines(unlist(lapply(q7q8m21,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q7q8m31,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q7q8m41,function(x) eval.model(x)$total)),col=4)
 grid(10,2)
-text(seq(1,length(lessnaive11),len=length(lessnaive11)),
-     rep(par("usr")[3],length(lessnaive11)),
-     labels=names(lessnaive11),xpd=NA,srt=45)
+text(seq(1,length(q7q8m11),len=length(q7q8m11)),
+     rep(par("usr")[3],length(q7q8m11)),
+     labels=names(q7q8m11),xpd=NA,srt=45)
 legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4,xpd=NA)
+```
+
+```{r,fig.align='center'}
+par(mfrow=c(1,2), mar = .pardefault$mar + c(0,-1,0,-1))
+plot.clm(q7q8m3,lwd=5)
+plot.clm(q7q8m31,lwd=5)
+```
+
+
+----
+
+## Predictive models: Q10 ~ Q19
+
+```{r, echo = F, fig.align = 'center',fig.cap='Model predictive accuracy'}
+par(mfrow=c(1,2), mar = .pardefault$mar + c(0,-1,0,-1))
+
+plot(unlist(lapply(q10q19m1,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="",main="Q8 ~ Q7")
+lines(unlist(lapply(q10q19m2,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q10q19m3,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q10q19m4,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(q10q19m1),len=length(q10q19m1)),
+     rep(par("usr")[3],length(q10q19m1)),
+     labels=names(q10q19m1),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4,xpd=NA)
+
+plot(unlist(lapply(q10q19m11,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="",main="Q7 ~ Q8")
+lines(unlist(lapply(q10q19m21,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q10q19m31,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q10q19m41,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(q10q19m11),len=length(q10q19m11)),
+     rep(par("usr")[3],length(q10q19m11)),
+     labels=names(q10q19m11),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4,xpd=NA)
+```
+
+```{r,fig.align='center'}
+par(mfrow=c(1,2), mar = .pardefault$mar + c(0,-1,0,-1))
+plot.clm(q10q19m3,lwd=5)
+plot.clm(q10q19m31,lwd=5)
 ```
 
 ----
 
-## Predictive models: Q10 vs Q19, Q10 vs Q20
+## Predictive models:  Q10 ~ Q20
 
+```{r, echo = F, fig.align = 'center',fig.cap='Model predictive accuracy'}
+par(mfrow=c(1,2), mar = .pardefault$mar + c(0,-1,0,-1))
+
+plot(unlist(lapply(q10q20m1,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="",main="Q8 ~ Q7")
+lines(unlist(lapply(q10q20m2,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q10q20m3,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q10q20m4,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(q10q20m1),len=length(q10q20m1)),
+     rep(par("usr")[3],length(q10q20m1)),
+     labels=names(q10q20m1),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4,xpd=NA)
+
+plot(unlist(lapply(q10q20m11,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="",main="Q7 ~ Q8")
+lines(unlist(lapply(q10q20m21,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(q10q20m31,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(q10q20m41,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(q10q20m11),len=length(q10q20m11)),
+     rep(par("usr")[3],length(q10q20m11)),
+     labels=names(q10q20m11),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4,xpd=NA)
+```
+
+```{r,fig.align='center'}
+par(mfrow=c(1,2), mar = .pardefault$mar + c(0,-1,0,-1))
+plot.clm(q10q20m3,lwd=5)
+plot.clm(q10q20m31,lwd=5)
+```
 ----
 
 ## Predictive models: Q10 vs Q11
