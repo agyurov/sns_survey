@@ -59,8 +59,7 @@ lessnaive3 = model.list(x = pred1, y = resp1, link = "cauchit") # nothing
 lessnaive4 = model.list(x = pred1, y = resp1, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
 
 
-
-# Evaluate the above models -----------------------------------------------
+# Evaluate the above models ------------------------------------  `-----------
 par(mfrow=c(2,2))
 my.barplot(unlist(lapply(lessnaive1,function(x) eval.model(x)$total)),
            namez = names(lessnaive1),main="logit")
@@ -83,3 +82,22 @@ text(seq(1,length(lessnaive1),len=length(lessnaive1)),
      labels=names(lessnaive1),xpd=NA,srt=45)
 legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4)
 
+
+
+# ... and vice versa
+
+lessnaive11 = model.list(x = resp1, y = pred1, link = "logit") # q8.1_killtime
+lessnaive21 = model.list(x = resp1, y = pred1, link = "probit") # q8.1_killtime, q8.5_beentertained
+lessnaive31 = model.list(x = resp1, y = pred1, link = "cauchit") # nothing
+lessnaive41 = model.list(x = resp1, y = pred1, link = "cloglog") # q8.1_killtime, q8.5_beentertained, q8.4_browsenoreason
+
+plot(unlist(lapply(lessnaive11,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n")
+lines(unlist(lapply(lessnaive21,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(lessnaive31,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(lessnaive41,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(lessnaive11),len=length(lessnaive11)),
+     rep(par("usr")[3],length(lessnaive11)),
+     labels=names(lessnaive11),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4)

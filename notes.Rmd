@@ -1,6 +1,10 @@
 ---
-title: "notes"
-output: html_document
+title: "SNS Survey Analysis Notes"
+output: 
+  html_document:
+          toc: true
+          theme: united
+          number_sections: true
 ---
 
 ```{r setup, include=FALSE,echo = F, message=F, warning=F}
@@ -8,92 +12,137 @@ knitr::opts_chunk$set(echo = F, message=F, warning=F)
 load(paste0(getwd(),"/all_data.Rdata"))
 require(knitr)
 require(markdown)
+require(ordinal)
 ```
 
 
-## Data Summary
 
+# Data Summary
 
 NA pattern unclear.
 
-# Part I. Examination of Q8 "relaxing and playing games how often do you use social network sites to"
-
-## Part Ia. PCA
-
-Principal component analysis of q8 is adequate due to the 7 step scale of the answers. Normality assumption ont meat, but also not required. PCA applied to cleaned q8 with missing values removed.
-
-```{r,results='hide',fig.align='center'}
-# my.barplot(prcomp(q8nonanum)$sdev^2,main="Principal components for Q8",namez=names(q8nonanum))
-```
-
-## Part Ib. Q8 FA
+----
+# FA Q8
 
 3, 4 and 5 factors are acceptable. Shown are only 3 and 4 factors, as 5 appear too many for 9 variables.
 
-```{r, echo=F,fig.align='center'}
+```{r, echo=F,fig.align='center',fig.cap='Factor loadings'}
 par(mfrow=c(1,2), mar = .pardefault$mar + c(0,2,0,2))
-plot.matrix(q8fa3, cutoff=.4,main="Q8fa3, cutoff = .4",col = grey.colors(2))
-plot.matrix(q8fa4, cutoff=.4,main="Q8fa3, cutoff = .4", col = grey.colors(2))
+plot.matrix(q8fa3, cutoff=.4,col = grey.colors(2))
+plot.matrix(q8fa4, cutoff=.4,col = grey.colors(2))
 ```
 
 * Factor1 (Games): playgamesfriends, plagamesstranger, playgamesalone
 * Factor2 (Spare time): killtime, browsenoreason, beentertained
-* Factor3: realeasetension, overcomelone
 
-Downloadmusic appears to be unrelated to the 3 identified above latent variables.
-
+Downloadmusic appears to be unrelated to the above identified latent variables.
 
 
-```{r, echo=F,fig.align='center'}
+
+```{r, echo=F,fig.align='center',fig.cap='Unique variance'}
 par(mfrow=c(1,2), mar = .pardefault$mar - c(0,2,0,2))
 my.barplot(q8fa3$uniquenesses,namez = names(q8fa3$uniquenesses),main="Unique variance")
 my.barplot(q8fa4$uniquenesses,namez = names(q8fa4$uniquenesses),main="Unique variance")
 
 ```
 
-## Part Ic. FA on Q8 and Q7
-
-Downloadmusic still appears independent. At a .3 cutoff some mixtures occur:
-```{r, echo = F, fig.align = 'center'}
-par(mfrow=c(2,2), mar = .pardefault$mar - c(2,-3,2,2))
-plot.matrix(q7q8fa1, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
-plot.matrix(q7q8fa2, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
-plot.matrix(q7q8fa3, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
-plot.matrix(q7q8fa4, cutoff = .3, main = "Cutoff .3", col = grey.colors(2))
-```
 
 
-# Part II. FA Q10
+----
+# FA Q10
 
 Minimum 3 factors required. 4 factors are too many.
 
-```{r,fig.align='center'}
+```{r,fig.align='center',fig.cap='Loadings and unique variance'}
 par(mar = .pardefault$mar + c(-2,4,-3,-2), mfrow=c(2,1))
-plot.matrix(q10fa,cutoff=.33,col=grey.colors(2),main="Cutoff .33")
+plot.matrix(q10fa,cutoff=.33,col=grey.colors(2))
 my.barplot(q10fa$uniquenesses,namez=names(q10fa$uniquenesses),main = "Unique variance")
 ```
 
-
-# Part III. proper analysis of q19
+----
+# Analysis of Q19
 Acceptable factors are 2 to 7.
 
-```{r, fig.align='center'}
-
+```{r, fig.align='center',fig.cap='Factor loadings'}
+par(mar = .pardefault$mar + c(0,4,-2,0),mfrow=c(1,3))
+plot.matrix(q19fa2,cutoff=.15,col=grey.colors(3))
+plot.matrix(q19fa3,cutoff=.33,col=grey.colors(3))
+plot.matrix(q19fa4,cutoff=.32,col=grey.colors(3))
 ```
 
-# Part IV. proper analysis of q20
-
-
-
-```{r, fig.align='center'}
-par(mar = .pardefault$mar + c(-2,4,-3,-2), mfrow=c(2,1))
-plot.matrix(q10q11fa$`3factors`,cutoff=.35,col=grey.colors(2),main="Cutoff .35")
-my.barplot(q10q11fa$`3factors`$uniquenesses,
-           namez=names(q10q11fa$`3factors`$uniquenesses),main = "Unique variance")
+```{r, fig.align='center',fig.cap='Unique variance'}
+par(mar = .pardefault$mar + c(0,-2,-2,-1),mfrow=c(1,3))
+my.barplot(q19fa2$uniquenesses,namez = names(q19fa2$uniquenesses),main="Unique variance")
+my.barplot(q19fa3$uniquenesses,namez = names(q19fa3$uniquenesses),main="Unique variance")
+my.barplot(q19fa4$uniquenesses,namez = names(q19fa4$uniquenesses),main="Unique variance")
 ```
 
-## Part X. Q10 vs Q19, Q10 vs Q20
-## Part II. Q10 vs Q11
+----
+# FA Q20
+
+```{r, fig.align='center', fig.cap='Summary of counts'}
+par(mar = .pardefault$mar + c(2,0,0,8))
+my.barplot.old(q20)
+```
+
+
+```{r, fig.align='center',fig.cap='Factor loadings'}
+par(mar = .pardefault$mar + c(0,4,-2,0),mfrow=c(2,2))
+plot.matrix(q20fa2,cutoff=.15,col=grey.colors(3))
+plot.matrix(q20fa3,cutoff=.15,col=grey.colors(3))
+plot.matrix(q20fa4,cutoff=.15,col=grey.colors(3))
+plot.matrix(q20fa5,cutoff=.15,col=grey.colors(3))
+```
+
+```{r, fig.align='center',fig.cap='Unique variance'}
+par(mar = .pardefault$mar + c(0,-2,-2,-1),mfrow=c(2,2))
+my.barplot(q20fa2$uniquenesses,namez = names(q20fa2$uniquenesses),main="Unique variance")
+my.barplot(q20fa3$uniquenesses,namez = names(q20fa3$uniquenesses),main="Unique variance")
+my.barplot(q20fa4$uniquenesses,namez = names(q20fa4$uniquenesses),main="Unique variance")
+my.barplot(q20fa5$uniquenesses,namez = names(q20fa5$uniquenesses),main="Unique variance")
+```
+
+
+# Predictive models
+
+
+
+----
+
+## Predictive models: Q8 ~ Q7
+
+```{r, echo = F, fig.align = 'center',fig.cap='Model predictive accuracy'}
+par(mfrow=c(1,2), mar = .pardefault$mar + c(0,-1,0,-1))
+
+plot(unlist(lapply(lessnaive1,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="")
+lines(unlist(lapply(lessnaive2,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(lessnaive3,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(lessnaive4,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(lessnaive1),len=length(lessnaive1)),
+     rep(par("usr")[3],length(lessnaive1)),
+     labels=names(lessnaive1),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4,xpd=NA)
+
+plot(unlist(lapply(lessnaive11,function(x) eval.model(x)$total)),type="l",col=1
+     ,ylim=c(.3,1),ylab="Accuracy",xaxt="n",xlab="")
+lines(unlist(lapply(lessnaive21,function(x) eval.model(x)$total)),col=2)
+lines(unlist(lapply(lessnaive31,function(x) eval.model(x)$total)),col=3)
+lines(unlist(lapply(lessnaive41,function(x) eval.model(x)$total)),col=4)
+grid(10,2)
+text(seq(1,length(lessnaive11),len=length(lessnaive11)),
+     rep(par("usr")[3],length(lessnaive11)),
+     labels=names(lessnaive11),xpd=NA,srt=45)
+legend("top",horiz=T,c("logit","probit","cauchit","cloglog"),bty="n",fill=1:4,xpd=NA)
+```
+
+----
+
+## Predictive models: Q10 vs Q19, Q10 vs Q20
+
+----
+
+## Predictive models: Q10 vs Q11
 FA points towards 3 factors. 4 factors identify Q11 as a separate factor.
-
 

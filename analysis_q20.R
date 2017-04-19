@@ -16,7 +16,7 @@ q20fa2 = factanal(q20nonanum, factors=2)
 q20fa3 = factanal(q20nonanum, factors=3)
 q20fa4 = factanal(q20nonanum, factors=4)
 q20fa5 = factanal(q20nonanum, factors=5)
-q20fa6 = factanal(q20nonanum, factors=6)
+q20fa6 = factanal(q20nonanum, factors=6) # poor
 
 
 
