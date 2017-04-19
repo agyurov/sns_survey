@@ -340,14 +340,14 @@ ordfactordf = function(x,ordered){
 # pred.clm, CLM or list of CLMs
 plot.clm = function(x,type="l",lwd=3,...){
   if(class(x)!="list")x = list(x)
-  plot(rep(1,length(x[[1]]$y)),type="l",col=2,lwd=lwd,bty="n",ylab="",yaxt="n",ylim=c(.8,.8+length(x)*.2))
+  plot(rep(1,length(x[[1]]$y)),type="l",col="",lwd=lwd,bty="n",ylab="",yaxt="n",ylim=c(.8,.8+length(x)*.2))
   for(i in 1:length(x)){
-    lines(rep(1,length(x[[1]]$y)) +.2*i,col=2,lwd=lwd)
+    lines(rep(1,length(x[[1]]$y)) +.2*i,col="grey",lwd=lwd)
     z = x[[i]]
     out = z$y == predict(x[[i]],type="class")$fit
     out[!out] = NA
     lines(out+.2*i - .2,type=type,lwd=lwd,...)
-    legend("bottom",c("Correct prediction","Wrong prediction"),fill=c(1,2),bty="n",horiz=T,xpd=NA,...)
+    legend("bottom",c("Correct prediction","Wrong prediction"),fill=c(1,"grey"),bty="n",horiz=T,xpd=NA,...)
   }
   text(x = mean(par("usr")[1:2]),y = seq(.9,.9+length(x)*.2-.1,.2), labels=names(x),xpd=NA)
 }

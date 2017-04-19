@@ -11,7 +11,7 @@ my.barplot.old(q20)
 
 
 # FA ----------------------------------------------------------------------
-
+q20fa = brute.force.fa(q20nonanum)
 q20fa2 = factanal(q20nonanum, factors=2)
 q20fa3 = factanal(q20nonanum, factors=3)
 q20fa4 = factanal(q20nonanum, factors=4)
