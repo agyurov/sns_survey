@@ -1,5 +1,5 @@
-.csv
-.xls
-.xlsx
-.Rproj.user
-.pdf
+*.csv
+*.xls
+*.xlsx
+*.Rproj.user
+*.pdf
