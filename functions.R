@@ -311,10 +311,10 @@ model.listZ = function(pred,resp,exclude.warnings=F, ...){
     # perform CLM if ordinal
     if(!is.numeric(df$Y)){
       if(exclude.warnings){
-        z <- has_warning(clms[[i]] <- step(clm(formula=frmla,data=df,...),test="Chisq",trace = 0))
-        if(z){
+        clms[[i]] <- step(clm(formula=frmla,data=df,...),test="Chisq",trace = 0)
+        if(clms[[i]]$convergence$code != 0){
+          cat(paste0("CLM convergence code for i = ",i," is ", clms[[i]]$convergence$code,"...\n"))
           clms[i] = "bad"
-          cat(paste0("CLM convergence code 1 for i = ",i,"...\n"))
         }
       }
       if(!exclude.warnings){
@@ -324,7 +324,7 @@ model.listZ = function(pred,resp,exclude.warnings=F, ...){
   }
   
   names(clms) = names(resp)
-  # clms = clms[clms!="bad"]
+  clms = clms[clms!="bad"]
   return(clms)
 }
 
