@@ -131,7 +131,8 @@ plot.matrix(cor.mat,col=grey.colors(100,0,1))
 na.cols = apply(df2,2,function(x)sum(is.na(x)))
 plot.na(df2)
 
-
+# dashes to underscores
+names(df2) = gsub("-","_",names(df2))
 
 # add question data frames to environment ---------------------------------
 
@@ -168,7 +169,16 @@ df.list2num = lapply(df.list2num,fact2num)
 names(df.list2num) = paste0(names(df.list2num),"num")
 list2env(df.list2num,envir = .GlobalEnv)
 
-# Demographic daa
+# Demographic data, ordered factors
 names(df2)
 demo.dat = df2[,115:124]
 names(demo.dat)
+
+# Demographic data, unordered factors
+demo.dat2 = ordfactordf(demo.dat,ordered=F)
+
+# some ad-hoc fixes
+q19labels = c("B","A","T","A","B","A","B","T","B","T","A","T")
+names(q19) = paste0(names(q19),"_",q19labels)
+
+

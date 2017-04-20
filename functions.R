@@ -292,6 +292,15 @@ model.list = function(pred,resp, ...){
   return(clms)
 }
 
+# Predict pred with resp, w/o overlapping. trims NAs. Wrapper of model.list
+model.list.adv = function(pred,resp,...){
+  newdf = na.omit(cbind(pred,resp))
+  print(paste0("Dim new dat = ",paste0(dim(newdf),collapse=" ")))
+  fk = model.list(pred = newdf[,!grepl(deparse(substitute(resp)),names(newdf))],
+                  resp = newdf[,grepl(deparse(substitute(resp)),names(newdf))])
+  return(model.list = fk)
+}
+
 # Predicting each var in a df
 clm.each = function(x,...){
   clms = list()
@@ -311,9 +320,9 @@ clm.each = function(x,...){
 }
 
 # Evaluate model
-eval.model = function(x,...){
+eval.model = function(x,which = c(1:3, 5),...){
   if(class(x) == "lm"){
-    plot(x,...)
+    plot(x,which=which,...)
     acf(resid(x),...)
     cat(paste0(lillie.test(resid(x))$p.value,"\n"))
     return(invisible(NULL))
@@ -340,13 +349,17 @@ ordfactordf = function(x,ordered){
 # pred.clm, CLM or list of CLMs
 plot.clm = function(x,type="l",lwd=3,...){
   if(class(x)!="list")x = list(x)
-  plot(rep(1,length(x[[1]]$y)),type="l",col="",lwd=lwd,bty="n",ylab="",yaxt="n",ylim=c(.8,.8+length(x)*.2))
+  if("lm" %in% unlist(lapply(x,class))) {
+    return(stop("Please supply CLM objects"))
+  }
+  plot(rep(1,length(x[[1]]$y)),pch=15,col="grey",bty="n",ylab="",yaxt="n",ylim=c(.8,.8+length(x)*.2),...)
   for(i in 1:length(x)){
-    lines(rep(1,length(x[[1]]$y)) +.2*i,col="grey",lwd=lwd)
+    points(rep(1,length(x[[1]]$y)) +.2*i,col="grey",pch=15,...)
     z = x[[i]]
-    out = z$y == predict(x[[i]],type="class")$fit
+    zz = ordfactor(z$y,ordered = F)
+    out = zz == predict(x[[i]],type="class")$fit
     out[!out] = NA
-    lines(out+.2*i - .2,type=type,lwd=lwd,...)
+    points(out+.2*i - .2,lwd=lwd,pch=15,...)
     legend("bottom",c("Correct prediction","Wrong prediction"),fill=c(1,"grey"),bty="n",horiz=T,xpd=NA,...)
   }
   text(x = mean(par("usr")[1:2]),y = seq(.9,.9+length(x)*.2-.1,.2), labels=names(x),xpd=NA)

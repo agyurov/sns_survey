@@ -18,6 +18,8 @@ load(paste0(getwd(),"/all_data.Rdata"))
 
 ```
 
+# Data summary
+
 
 
 
@@ -232,4 +234,5 @@ plot.clm(q10q20m31,lwd=5)
 * Particular hypthesis could be tested using CFA
 * Alternative predictive models for latent variables can be constructed, potentially for mixtures of questions
 * Cauchit link binomial GLMs appear to be fitting best. Alternatively, one could investigate negative binomial GLMs
+* Demographics have not been included in the analysis
 

@@ -1,10 +1,10 @@
 # Analysis Q19
 
 # Labeling q19 ISEL
-q19labels = c("B","A","T","A","B","A","B","T","B","T","A","T")
-names(q19) = paste0(names(q19),"_",q19labels)
-names(q19nona) = paste0(names(q19nona),"_",q19labels)
-names(q19nonanum) = paste0(names(q19nonanum),"_",q19labels)
+# q19labels = c("B","A","T","A","B","A","B","T","B","T","A","T")
+# names(q19) = paste0(names(q19),"_",q19labels)
+# names(q19nona) = paste0(names(q19nona),"_",q19labels)
+# names(q19nonanum) = paste0(names(q19nonanum),"_",q19labels)
 unique(q19labels)
 
 # Overview

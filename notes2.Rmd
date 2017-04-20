@@ -1,0 +1,37 @@
+---
+title: "SNS Survey Analysis Notes 2"
+output:
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE,echo = F, message=F, warning=F}
+require(knitr)
+require(markdown)
+require(xtable)
+require(ordinal)
+knitr::opts_chunk$set(echo = F, message=F, warning=F)
+load(paste0(getwd(),"/all_data.Rdata"))
+
+```
+
+# Some summaries
+
+Total number of friends:
+
+```{r, results='markup'}
+  plot.ts(q3$q3.1_friendnum, ylab = "count", xlab = "", main = "Number of friends on SNS")
+```
+
+
+
+# Relating number of friends to ...
+
+```{r, results='asis'}
+
+
+```
