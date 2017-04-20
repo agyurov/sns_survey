@@ -292,12 +292,48 @@ model.list = function(pred,resp, ...){
   return(clms)
 }
 
+# model.list + warnings parameter
+model.listZ = function(pred,resp,exclude.warnings=F, ...){
+  # x predictors
+  # y responses
+  clms = list()
+  pred = as.data.frame(pred)
+  resp = as.data.frame(resp)
+  
+  for(i in 1:ncol(resp)){
+    cat(paste0("Estimating model ",i," of ", ncol(resp),"\n"))
+    df = cbind(pred,Y=resp[,i])
+    frmla = as.formula(paste0("Y"," ~ ",paste0(names(pred),collapse=" + ")))
+    # perform LM if numeric
+    if(is.numeric(df$Y)){
+      clms[[i]] = step(lm(formula=frmla,data=df,...),test="F",trace = 0)
+    }
+    # perform CLM if ordinal
+    if(!is.numeric(df$Y)){
+      if(exclude.warnings){
+        z <- has_warning(clms[[i]] <- step(clm(formula=frmla,data=df,...),test="Chisq",trace = 0))
+        if(z){
+          clms[i] = "bad"
+          cat(paste0("CLM convergence code 1 for i = ",i,"...\n"))
+        }
+      }
+      if(!exclude.warnings){
+        clms[[i]] <- step(clm(formula=frmla,data=df,...),test="Chisq",trace = 0)
+      }
+    }
+  }
+  
+  names(clms) = names(resp)
+  # clms = clms[clms!="bad"]
+  return(clms)
+}
+
 # Predict pred with resp, w/o overlapping. trims NAs. Wrapper of model.list
 model.list.adv = function(pred,resp,...){
   newdf = na.omit(cbind(pred,resp))
   print(paste0("Dim new dat = ",paste0(dim(newdf),collapse=" ")))
-  fk = model.list(pred = newdf[,!grepl(deparse(substitute(resp)),names(newdf))],
-                  resp = newdf[,grepl(deparse(substitute(resp)),names(newdf))])
+  fk = model.listZ(pred = newdf[,!grepl(deparse(substitute(resp)),names(newdf))],
+                  resp = newdf[,grepl(deparse(substitute(resp)),names(newdf))],...)
   return(model.list = fk)
 }
 
