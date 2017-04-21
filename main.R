@@ -21,6 +21,8 @@ source("analysis_q20.R")
 
 source("analysis.R")
 
+source("analysis_alt.R")
+
 # record()
 # save.image(paste0(getwd(),"/","all_data.RData"))
 # save.image(paste0(getwd(),"/bucket.RData"))

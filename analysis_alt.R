@@ -2,45 +2,34 @@
 
 
 m1 = model.list.adv(pred = demo.dat, resp = q11, exclude.warnings = T)
-lapply(m1,summary)
-lapply(m1,eval.model)
-plot.clm(m1)
-
+# lapply(m1,summary)
+# lapply(m1,eval.model)
+# plot.clm(m1)
 
 m2 = model.list.adv(pred = demo.dat, resp = q12, exclude.warnings = T)
-lapply(m2,summary)
-lapply(m2,eval.model)
-plot.clm(m2)
 
 
 m3 = model.list.adv(pred = demo.dat, resp = q13, exclude.warnings = T)
-lapply(m3,summary)
-lapply(m3,eval.model)
-plot.clm(m3)
 
 m4 = model.list.adv(pred = demo.dat, resp = q15, exclude.warnings = T)
-lapply(m4,summary)
-lapply(m4,eval.model)
-plot.clm(m4)
 
 m5 = model.list.adv(pred = demo.dat, resp = q16, exclude.warnings = T)
-lapply(m5,summary)
-lapply(m5,eval.model)
-plot.clm(m5)
-
 
 # q17 to omany NAs
-m6 = model.list.adv(pred = demo.dat, resp = q18, exclude.warnings = T)
-lapply(m6,summary)
-lapply(m6,eval.model)
-plot.clm(m6)
+m6 = model.list.adv(pred = demo.dat, resp = q18, exclude.warnings = T, link = "logit")
 
-m7 = model.list.adv(pred = demo.dat, resp = q19, exclude.warnings = T)
-lapply(m7,summary)
-lapply(m7,eval.model)
-plot.clm(m7)
+m7 = model.list.adv(pred = demo.dat, resp = q19, exclude.warnings = T, link = "cloglog")
 
 m8 = model.list.adv(pred = demo.dat, resp = q20, exclude.warnings = T)
-lapply(m8,summary)
-lapply(m8,eval.model)
-plot.clm(m8)
+
+
+# lapply(paste0("m",1:8),function(x) eval(parse(text = x)))
+lapply(paste0("m",1:8),function(x) length(eval(parse(text = x))))
+
+
+model.names = paste0("m",1:8)
+
+models = lapply(model.names,function(x) eval(parse(text = x)))
+models.null = which(unlist(lapply(models,length))==0)
+models = models[-models.null]
+names(models) = model.names[-models.null]

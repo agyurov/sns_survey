@@ -400,3 +400,29 @@ plot.clm = function(x,type="l",lwd=3,...){
   }
   text(x = mean(par("usr")[1:2]),y = seq(.9,.9+length(x)*.2-.1,.2), labels=names(x),xpd=NA)
 }
+
+# plot the actual matrix
+plot.matrix2 = function(x,rnd=3,srt=45,lty=2,cutoff=NULL,cex=1,scale=F,scale.lab=.03,...){
+  plot.matrix(round(x),bty="n",col="white",yaxt="n",xaxt="n")
+  xseq = seq(0,1,len=ncol(x))
+  xseq = rep(xseq,each=nrow(x))
+  yseq = seq(0,1,len=nrow(x))
+  yseq = rep(yseq,ncol(x))
+  abline(v = (unique(xseq) - 1/(ncol(x)*2))[-1],col="grey",lty=lty)
+  abline(h = (unique(yseq) - 1/(nrow(x)*2))[-1],col="grey",lty=lty)
+  if(!is.null(cutoff)){
+    x[x<cutoff] = 0
+  }
+  if(scale){
+    cex = cex * x/max(x)
+  }
+  lx = par("usr")[2] - par("usr")[1]
+  ly = par("usr")[4] - par("usr")[3]
+  posx = par("usr")[1] - lx*scale.lab
+  posy = par("usr")[3] - ly*scale.lab
+  text(xseq,rev(yseq),labels = round(x,rnd),xpd=NA,cex=cex)
+  text(unique(xseq),rep(posy,ncol(x)),labels = colnames(x),xpd=NA,srt=srt,...)
+  text(rep(posx,nrow(x)),unique(yseq),labels = rownames(x),xpd=NA,srt=srt,...)
+}
+
+
