@@ -425,4 +425,19 @@ plot.matrix2 = function(x,rnd=3,srt=45,lty=2,cutoff=NULL,cex=1,scale=F,scale.lab
   text(rep(posx,nrow(x)),unique(yseq),labels = rownames(x),xpd=NA,srt=srt,...)
 }
 
+# invert levels of  factors and factors in data.frames
+invert.level = function(x,vars = NULL){
+  # vars character string of vars to reverse
+  if(class(x)!= "data.frame"){
+    x = as.data.frame(x=x)
+  }
+  if(is.null(vars)){
+    x = do.call(cbind.data.frame,lapply(x,function(x) factor(x,labels=rev(levels(x)[levels(x)%in%unique(x)]))))
+  }
+  for(i in vars){
+    x[,i] = factor(x[,i],labels=rev(levels(x[,i])[levels(x[,i])%in%unique(x[,i])]))
+  }
+  return(x)
+}
+
 

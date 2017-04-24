@@ -33,3 +33,18 @@ models = lapply(model.names,function(x) eval(parse(text = x)))
 models.null = which(unlist(lapply(models,length))==0)
 models = models[-models.null]
 names(models) = model.names[-models.null]
+
+
+# invert scale
+
+
+
+
+  
+x = q19
+head(invert.scale(x,1:3))
+head(x)
+  
+  
+  
+  
