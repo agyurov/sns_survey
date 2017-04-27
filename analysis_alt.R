@@ -42,7 +42,7 @@ names(models) = model.names[-models.null]
 
   
 x = q19
-head(invert.scale(x,1:3))
+head(invert.level(x,1:3))
 head(x)
   
   

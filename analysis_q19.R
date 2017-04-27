@@ -33,5 +33,5 @@ h0 = '
       GroupB =~ q19.1_isel1_B + q19.5_isel5_B + q19.7_isel7_B + q19.9_isel9_B
       GroupT =~ q19.3_isel3_T + q19.8_isel8_T + q19.10_isel10_T + q19.12_isel12_T
       '
-m0 = cfa(model = h0, data = q19nona)
+# m0 = cfa(model = h0, data = q19nona)
 

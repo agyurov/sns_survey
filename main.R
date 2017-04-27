@@ -1,4 +1,5 @@
 # main
+cat("\014")
 rm(list = ls())
 # .pardefault = par()
 wd = getwd()
@@ -27,3 +28,6 @@ source("analysis_alt.R")
 # save.image(paste0(getwd(),"/","all_data.RData"))
 # save.image(paste0(getwd(),"/bucket.RData"))
 # browseURL(paste('file://', file.path(getwd(),'notes.html'), sep=''))
+
+
+bucket.classes(c("clm","lm","factanal","cfa"))

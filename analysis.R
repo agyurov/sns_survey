@@ -38,6 +38,7 @@ print(q7q8fa4, cutoff = .3)
 
 
 
+
 # Q8 ~ Q7 clms ------------------------------------------------------------
 q7fa = brute.force.fa(q7nonanum, scores = "regression")
 q7q8clms = clm.each(q7q8nona) # not a single good model (not surprisingly)
@@ -100,6 +101,7 @@ plot.clm(q7q8m11,lwd=5)
 plot.clm(q7q8m21,lwd=5)
 plot.clm(q7q8m31,lwd=5)
 plot.clm(q7q8m4,lwd=5)
+
 
 
 
@@ -176,6 +178,7 @@ plot.clm(q10q19m41,lwd=5)
 
 
 
+
 # Q10 ~ Q20 ---------------------------------------------------------------
 
 q10q20 = cbind(q10,q20)
@@ -243,5 +246,12 @@ plot.clm(q10q20m21,lwd=5)
 plot.clm(q10q20m31,lwd=5)
 plot.clm(q10q20m41,lwd=5)
 
+
+
+
+
+
+
+# Add models to bucket ----------------------------------------------------
 
 

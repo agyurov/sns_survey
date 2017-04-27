@@ -1,5 +1,8 @@
 # functions
 
+main = function(){
+  source("main.R")
+}
 # dev.set(dev.list()[???]])
 #
 unique.data = function(df){
@@ -134,7 +137,7 @@ rename.level = function(df,include.na = NULL, ordered){
 
 # goood stuff
 .BucketEnv = new.env()
-bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
+bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F,file = "bucket.RData"){
   # Exit if add=F and empty bucket
   if(!add & length(as.list(env))==0 & !rmv){
     cat("Empty bucket, nothing to find here.\n")
@@ -164,6 +167,11 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
     }
     if(all(out)){
       cat(paste0("Returning ",paste0(arg[out],collapse = ", "),".\n"))
+      # new ---
+      for(i in 1:length(out)){
+        assign(arg[out[i]],as.list(env)[arg[out[i]]],envir = .GlobalEnv)
+      }
+      # end new ---
       return(as.list(env)[arg[out]])
     }
     
@@ -207,6 +215,32 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F){
         if(ans == "y"){
           rm(list=i,envir = env)
         }
+      }
+    }
+  }
+  save(ls(envir = .BucketEnv),paste0(getwd(),"/",file),envir = env)
+}
+
+# Add classes to bucket
+bucket.classes = function(destination = .BucketEnv,classes,from=.GlobalEnv,...){
+  varz = ls(name=from)
+  # varz = varz[216:220]
+  for(i in 1:length(varz)){
+    tmp = eval(parse(text=varz[i]))
+    if(class(tmp) == "function"){
+      next
+    }
+    # got to search for classes in lists...
+    tmp = break.list(tmp)
+    if(class(tmp) != "list"){
+      tmp = list(tmp)
+    }
+    tmp.class = unlist(lapply(tmp,class))
+    for(j in 1:length(tmp)){
+      if(length(tmp) > 0 && !is.null(tmp) && tmp.class[[j]] %in% classes){
+        obj = tmp[[j]]
+        ifelse(is.null(names(tmp)[j]),nameend <- "", nameend <- names(tmp)[j])
+        assign(paste0(varz[i],"_",nameend),obj,envir = destination)
       }
     }
   }
@@ -438,6 +472,29 @@ invert.level = function(x,vars = NULL){
     x[,i] = factor(x[,i],labels=rev(levels(x[,i])[levels(x[,i])%in%unique(x[,i])]))
   }
   return(x)
+}
+
+# break list into list of non list objects 
+break.list = function(x){
+  out = list()
+  if(class(x) == "list" & length(x) > 0){
+    for(i in 1:length(x)){
+      if(length(x[[i]]) > 0){
+        out[[i]] = break.list(x[[i]])
+        if(is.null(names(x))){
+          names(out)[i] = paste0(names(x)[i],"NEW_",i)
+        }else{
+          names(out)[i] = names(x)[i]
+        }
+        
+      }
+    }
+    return(out)
+  }
+  if(!class(x) == "list"){
+    out = x
+    return(out)
+  }
 }
 
 
