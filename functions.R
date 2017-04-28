@@ -136,8 +136,6 @@ rename.level = function(df,include.na = NULL, ordered){
 }
 
 
-
-#  ------------------------------------------------------------------------
 # goood stuff
 .BucketEnv = new.env()
 bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F,filef = "bucket.RData"){
@@ -150,7 +148,11 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F,filef = "bucket.RDa
   if(!add & length(as.list(env))!=0 & length(as.character(as.list(substitute(list(...)))[-1]))==0 & !rmv){
     cat("In storage: \n")
     if(short){
-      print(lapply(as.list(env),class))
+      zz = ls(envir = env)
+      zz2 = lapply(as.list(env),class)
+      names(zz2) = NULL
+      print(data.frame(class=unlist(zz2),name = zz))
+      return(invisible(data.frame(class=unlist(zz2),name = zz)))
     }
     if(!short){
       print(as.list(env))
@@ -281,7 +283,6 @@ with(.BucketEnv,save.image(paste0(getwd(),"/bucket.RData")))
 # with(.BucketEnv,rm(list=ls()))
 
 
-#  ------------------------------------------------------------------------
 # save variables to data_file.RData
 record = function(file = data_file){
   save.image(file)
