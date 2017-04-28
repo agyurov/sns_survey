@@ -8,7 +8,7 @@ data_file = "all_data.RData"
 
 source("libraries.R")
 
-source("functions.R")
+source("Rfunctions/Rfunctions.R")
 
 source("data_prep.R")
 
@@ -31,4 +31,4 @@ source("analysis_alt.R")
 
 
 bucket.classes(classes=c("clm","lm","factanal","cfa","data.frame"))
-with(.BucketEnv,save.image(paste0(getwd(),"/bucket.RData")))
+# with(.BucketEnv,save.image(paste0(getwd(),"/bucket.RData")))
