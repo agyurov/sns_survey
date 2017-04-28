@@ -158,6 +158,8 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F,file = "bucket.RDat
   
   # Check for existence
   out = arg %in% ls(env)
+  print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOUT")
+  print(arg)
   # -----------------------------------------
   # Return from bucket
   if(!add & !rmv){
