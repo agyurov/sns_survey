@@ -135,9 +135,12 @@ rename.level = function(df,include.na = NULL, ordered){
   return(df) 
 }
 
+
+
+#  ------------------------------------------------------------------------
 # goood stuff
 .BucketEnv = new.env()
-bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F,file = "bucket.RData"){
+bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F,filef = "bucket.RData"){
   # Exit if add=F and empty bucket
   if(!add & length(as.list(env))==0 & !rmv){
     cat("Empty bucket, nothing to find here.\n")
@@ -220,7 +223,8 @@ bucket = function(...,add = F,env = .BucketEnv,short=T,rmv=F,file = "bucket.RDat
       }
     }
   }
-  save(ls(envir = .BucketEnv),paste0(getwd(),"/",file),envir = env)
+  # save(list=ls(envir = .BucketEnv),file=paste0(getwd(),"/",filef),envir = env)
+  with(env,save.image(paste0(getwd(),"/",filef)))
 }
 
 # Add classes to bucket
@@ -248,6 +252,36 @@ bucket.classes = function(destination = .BucketEnv,classes,from=.GlobalEnv,...){
   }
 }
 
+# break list into list of non list objects 
+break.list = function(x){
+  out = list()
+  if(class(x) == "list" & length(x) > 0){
+    for(i in 1:length(x)){
+      if(length(x[[i]]) > 0){
+        out[[i]] = break.list(x[[i]])
+        if(is.null(names(x))){
+          names(out)[i] = paste0(names(x)[i],"NEW_",i)
+        }else{
+          names(out)[i] = names(x)[i]
+        }
+        
+      }
+    }
+    return(out)
+  }
+  if(!class(x) == "list"){
+    out = x
+    return(out)
+  }
+}
+
+bucket.classes(classes=c("clm","lm","factanal","cfa","data.frame"))
+with(.BucketEnv,save.image(paste0(getwd(),"/bucket.RData")))
+# Remove env
+# with(.BucketEnv,rm(list=ls()))
+
+
+#  ------------------------------------------------------------------------
 # save variables to data_file.RData
 record = function(file = data_file){
   save.image(file)
@@ -476,27 +510,6 @@ invert.level = function(x,vars = NULL){
   return(x)
 }
 
-# break list into list of non list objects 
-break.list = function(x){
-  out = list()
-  if(class(x) == "list" & length(x) > 0){
-    for(i in 1:length(x)){
-      if(length(x[[i]]) > 0){
-        out[[i]] = break.list(x[[i]])
-        if(is.null(names(x))){
-          names(out)[i] = paste0(names(x)[i],"NEW_",i)
-        }else{
-          names(out)[i] = names(x)[i]
-        }
-        
-      }
-    }
-    return(out)
-  }
-  if(!class(x) == "list"){
-    out = x
-    return(out)
-  }
-}
+
 
 

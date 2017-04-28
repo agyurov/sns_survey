@@ -30,4 +30,5 @@ source("analysis_alt.R")
 # browseURL(paste('file://', file.path(getwd(),'notes.html'), sep=''))
 
 
-bucket.classes(c("clm","lm","factanal","cfa"))
+bucket.classes(classes=c("clm","lm","factanal","cfa","data.frame"))
+with(.BucketEnv,save.image(paste0(getwd(),"/bucket.RData")))

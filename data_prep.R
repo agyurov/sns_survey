@@ -87,7 +87,7 @@ str(df2)
 chr2fctr = unlist(lapply(df2,is.character))
 
 df2 = do.call(cbind.data.frame,lapply(df2[,unlist(lapply(df2,is.character))],function(x) factor(x,ordered=T)))
-df2$q33.1_startdate= as.Date(df2$q33.1_startdate)
+df2$q33.1_startdate = as.Date(df2$q33.1_startdate)
 df2$q3.1_friendnum = as.numeric(df2$q3.1_friendnum)
 
 
@@ -106,7 +106,7 @@ for(i in 1:length(questions)){
 # Add to the bucket -------------------------------------------------------
 
 
-bucket(full_questions_names, question_numbers,add=T)
+# bucket(full_questions_names, question_numbers,add=T)
 
 
 
