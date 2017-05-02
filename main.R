@@ -24,6 +24,8 @@ source("analysis.R")
 
 source("analysis_alt.R")
 
+source("chronbach.R")
+
 # record()
 # save.image(paste0(getwd(),"/","all_data.RData"))
 # save.image(paste0(getwd(),"/bucket.RData"))

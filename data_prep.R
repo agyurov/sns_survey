@@ -68,7 +68,6 @@ x = tolower(x)
 df1 = df0
 df1 = df1[-1,]
 names(df1) = x
-names(df1)
 
 # Finally rename the added missing questions.....
 names(df1)[grep("q14.1",names(df1))] = paste("q14.1_IfYouWokeUpTomorrowAndFoundOutThat")
@@ -81,7 +80,6 @@ df1[,grep("q31.1",names(df1))] = as.character(df1[,grep("q31.1",names(df1))])
 # Check variable class ----------------------------------------------------
 
 df2 = df1
-str(df2)
 
 # chr to ordered factor
 chr2fctr = unlist(lapply(df2,is.character))
@@ -159,9 +157,20 @@ names(df.list2) = paste0(names(df.list),"nona")
 # how many complete rows for each question set
 df.list2 = lapply(df.list2,na.omit)
 unlist(lapply(df.list2,function(x)dim(x)[1]))
+
+
+# Invert scales -----------------------------------------------------------
+
+# Q19
+q19inv = c(1,2,7,8,11,12)
+df.list2$q19nona = invert.level(df.list2$q19nona,q19inv)
+
 list2env(df.list2,envir=.GlobalEnv)
 
-# numeric data frames w/o NAs 
+
+# numeric data frames w/o NAs ---------------------------------------------
+
+
 df.list2num = list()
 df.list2num = df.list2[which(qlen!=1)]
 df.list2num[names(df.list2num)[which(unlist(lapply(df.list2num,function(x)dim(x)[1])) == 0)]] = NULL
@@ -180,5 +189,6 @@ demo.dat2 = ordfactordf(demo.dat,ordered=F)
 # some ad-hoc fixes
 q19labels = c("B","A","T","A","B","A","B","T","B","T","A","T")
 names(q19) = paste0(names(q19),"_",q19labels)
+
 
 

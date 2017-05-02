@@ -11,27 +11,22 @@ output:
 
 ```{r setup, include=FALSE,echo = F, message=F, warning=F}
 require(knitr)
+require(psych)
 require(markdown)
 require(xtable)
 require(ordinal)
+
 knitr::opts_chunk$set(echo = F, message=F, warning=F)
 load(paste0(getwd(),"/all_data.Rdata"))
-
+load(paste0(getwd(),"/bucket.Rdata"))
 ```
 
-# Some summaries
+# Summary
 
-Total number of friends:
+# Chronbach's alhpa scale analysis
 
-```{r, results='markup'}
-  plot.ts(q3$q3.1_friendnum, ylab = "count", xlab = "", main = "Number of friends on SNS")
+```{r,fig.align='center',results='markup'}
+  source("chronbach.R")
 ```
 
 
-
-# Relating number of friends to ...
-
-```{r, results='asis'}
-
-
-```
